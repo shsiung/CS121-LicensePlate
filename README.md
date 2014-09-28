@@ -1,10 +1,10 @@
-CS121-LicensePlate
+121-LicensePlate
 ==================
 
 The License Plate Project for CS121.
 
 
-Hellow
+asejf;iesifjaels;ifjase;Hellow
 
 Trying github!
 
