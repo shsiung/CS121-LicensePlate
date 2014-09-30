@@ -29,10 +29,10 @@ public class getPicActivity extends Activity {
         Camera object = null;
         try {
             object = Camera.open(0);
-            Log.d("ADebugTag", "Camera open!");
+           // Log.d("ADebugTag", "Camera open!");
         }
         catch (Exception e){
-            Log.d("ADebugTag","Camera not available!");
+           // Log.d("ADebugTag","Camera not available!");
         }
         return object;
     }
@@ -45,7 +45,6 @@ public class getPicActivity extends Activity {
         Intent intent = getIntent();
         pic = (ImageView)findViewById(R.id.imageView1);
         cameraObject = isCameraAvailiable();
-        //cameraObject = Camera.open();
         showCamera = new ShowCamera(this, cameraObject);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(showCamera);
@@ -74,7 +73,6 @@ public class getPicActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bp = (Bitmap) data.getExtras().get("data");
         imgFavorite.setImageBitmap(bp);
