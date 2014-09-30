@@ -1,9 +1,11 @@
 package myfirstapp.example.com.licenseplate;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class LicensePlateTracker extends Activity {
@@ -13,8 +15,7 @@ public class LicensePlateTracker extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_license_plate_tracker);
     }
-
-
+    // Default functions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -22,6 +23,7 @@ public class LicensePlateTracker extends Activity {
         return true;
     }
 
+    // Default functions
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -33,4 +35,12 @@ public class LicensePlateTracker extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /** Called when the user clicks the Send button */
+    public void getPicture(View view) {
+        // Do something in response to button
+        Intent intent = new Intent(this, getPicActivity.class);
+        startActivity(intent);
+    }
+
 }
