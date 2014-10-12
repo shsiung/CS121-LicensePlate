@@ -12,13 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.cui_cindy.licenseplate.Tagging.PhotoAttributes;
+import myfirstapp.example.com.licenseplate.Tagging.PhotoAttributes;
 
 import java.util.HashMap;
 
 import static android.app.PendingIntent.getActivity;
 
-public class MyActivity extends Activity implements OnItemSelectedListener {
+public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
     Spinner spinnerOsversions;
     TextView selState;
     HashMap<String, PhotoAttributes> photosByName_;
@@ -32,7 +32,7 @@ public class MyActivity extends Activity implements OnItemSelectedListener {
         // Here we should load the program data saved to file and initiate photosByName_
         this.loadHashMap();
         this.currentPhoto_ = null;
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.tagging);
         System.out.println(state.length);
         selState = (TextView) findViewById(R.id.selVersion);
         spinnerOsversions = (Spinner) findViewById(R.id.osversions);
@@ -88,7 +88,6 @@ public class MyActivity extends Activity implements OnItemSelectedListener {
         spinnerOsversions.setSelection(position);
         String selState = (String) spinnerOsversions.getSelectedItem();
         this.selState.setText("Selected State Name:" + selState);
-
     }
 
     @Override

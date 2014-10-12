@@ -1,4 +1,4 @@
-package myfirstapp.example.com.licenseplate;
+package myfirstapp.example.com.licenseplate.Tagging;
 
 /**
  * Created by cui_cindy on 10/6/14.
