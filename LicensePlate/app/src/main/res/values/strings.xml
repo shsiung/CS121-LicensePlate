@@ -7,5 +7,7 @@
     <string name="take_picture">Get picture!</string>
     <string name="Capture">Capture</string>
     <string name="title_activity_get_pic">Camera</string>
+    <string name="taggingMainView">Tagging Main View</string>
+    <string name="preference_file_key">License_Plate_Records</string>
 
 </resources>
