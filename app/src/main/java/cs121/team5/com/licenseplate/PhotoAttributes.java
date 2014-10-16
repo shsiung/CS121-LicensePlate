@@ -27,11 +27,12 @@ public class PhotoAttributes {
     }
 
     public String composeName() {
-        //hihihi
 
         StringBuilder builder = new StringBuilder();
         builder.append(this.state_);
+        builder.append('+');
         builder.append(this.number_);
+        builder.append('+');
         builder.append(this.special_);
         this.name_ = builder.toString();
         // This should ideally return the directory, which we need to figure out how to parse
