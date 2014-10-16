@@ -2,7 +2,12 @@
 <resources>
 
     <string name="app_name">LicensePlate</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello world!!!!</string>
     <string name="action_settings">Settings</string>
+    <string name="take_picture">Get picture!</string>
+    <string name="Capture">Capture</string>
+    <string name="title_activity_get_pic">Camera</string>
+    <string name="taggingMainView">Tagging Main View</string>
+    <string name="preference_file_key">License_Plate_Records</string>
 
 </resources>
