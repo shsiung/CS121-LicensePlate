@@ -20,10 +20,10 @@ public class GetPicActivity extends Activity {
     private Camera cameraObject;
     private ShowCamera showCamera;
 
-    public static Camera isCameraAvailiable(){
+    public static Camera isCameraAvailable(){
         Camera object = null;
         try {
-            object = Camera.open(0);
+            object = Camera.open();
             // Log.d("ADebugTag", "Camera open!");
         }
         catch (Exception e){
@@ -36,7 +36,7 @@ public class GetPicActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_pic);
-        cameraObject = isCameraAvailiable();
+        cameraObject = isCameraAvailable();
         showCamera = new ShowCamera(this, cameraObject);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(showCamera);

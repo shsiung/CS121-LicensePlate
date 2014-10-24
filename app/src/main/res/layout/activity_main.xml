@@ -8,10 +8,10 @@
         android:id="@+id/getPicture"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:onClick="getPicture"
-        style="@style/CustomButton"
-        android:text="@string/Capture" />
+        android:text="@string/Capture"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/searchView"
