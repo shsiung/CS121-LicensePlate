@@ -46,8 +46,8 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                 android.R.layout.simple_spinner_item, state);
         adapter_state
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerOsversions.setAdapter(adapter_state);
-        spinnerOsversions.setOnItemSelectedListener(this);
+        spinnerStates.setAdapter(adapter_state);
+        spinnerStates.setOnItemSelectedListener(this);
         setImageView();
     }
 
@@ -59,7 +59,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
             fileNames = imagesFolder.list();
             for (int i = 0; i<fileNames.length; i++ ){
              Log.d("ADebugTag", fileNames[i]);
-            }t
+            }
             Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getPath() + "/" + fileNames[0]);
             license.setImageBitmap(mBitmap);
         }
