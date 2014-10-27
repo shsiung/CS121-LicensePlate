@@ -3,6 +3,7 @@ package cs121.team5.com.licenseplate;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -15,13 +16,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
 
 import static android.app.PendingIntent.getActivity;
 
 public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
-    Spinner spinnerOsversions;
+    Spinner spinnerStates;
     TextView selState;
+    ImageView imageView;
     HashMap<String, PhotoAttributes> photosByName_;
     PhotoAttributes currentPhoto_;
     ImageView license;
@@ -38,7 +41,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         setContentView(R.layout.tagging);
         System.out.println(state.length);
         selState = (TextView) findViewById(R.id.selVersion);
-        spinnerOsversions = (Spinner) findViewById(R.id.osversions);
+        spinnerStates = (Spinner) findViewById(R.id.osversions);
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, state);
         adapter_state
@@ -82,7 +85,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     public void loadPhoto(PhotoAttributes newPhoto) {
         String photoDir = newPhoto.composeName();
         // Load the photo to display in a photo view from currentPhotoDir
-
+        this.imageView.setImageURI(Uri.parse(photoDir));
         this.updatePhotoAttribute(newPhoto);
     }
 
@@ -90,6 +93,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         File from = new File(oldname);
         File to = new File(newname);
         from.renameTo(to);
+
         // rename using android FS operation
     }
     // Always call when the photo attribute is updated
@@ -106,8 +110,8 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
-        spinnerOsversions.setSelection(position);
-        String selState = (String) spinnerOsversions.getSelectedItem();
+        spinnerStates.setSelection(position);
+        String selState = (String) spinnerStates.getSelectedItem();
         this.selState.setText("Selected State Name:" + selState);
 
     }

@@ -37,7 +37,9 @@ public class PhotoAttributes {
     public String composeName() {
         StringBuilder builder = new StringBuilder();
         builder.append(this.state_);
+        builder.append('+');
         builder.append(this.number_);
+        builder.append('+');
         builder.append(this.special_);
         this.name_ = builder.toString();
         return this.name_;

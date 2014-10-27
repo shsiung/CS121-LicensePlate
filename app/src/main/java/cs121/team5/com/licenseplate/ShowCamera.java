@@ -73,8 +73,7 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
         //Adjust the dimension values as needed
-        canvas.drawRect((screenWidth/8)*6,(screenHeight/8)*6,(screenWidth/8)*6,(screenHeight/8)*6, paint);
-
+        canvas.drawRect((screenWidth/5),(screenHeight/5),4*(screenWidth/5),4*(screenHeight/5), paint);
 //
 //        paint.setStrokeWidth(3);
 //        paint.setStyle(Paint.Style.STROKE);
