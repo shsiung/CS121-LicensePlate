@@ -1,11 +1,16 @@
 package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,6 +24,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     TextView selState;
     HashMap<String, PhotoAttributes> photosByName_;
     PhotoAttributes currentPhoto_;
+    ImageView license;
     private String[] state = { "CA", "VA", "NJ", "TN",
             "TA", "WS"};
 
@@ -28,6 +34,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         // Here we should load the program data saved to file and initiate photosByName_
 //        this.loadHashMap();
         this.currentPhoto_ = null;
+        license = (ImageView) findViewById(R.id.license);
         setContentView(R.layout.tagging);
         System.out.println(state.length);
         selState = (TextView) findViewById(R.id.selVersion);
@@ -38,7 +45,22 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerOsversions.setAdapter(adapter_state);
         spinnerOsversions.setOnItemSelectedListener(this);
+        setImageView();
+    }
 
+    public void setImageView() {
+        File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "License_Plate");
+        String[] fileNames;
+        if(imagesFolder.exists())
+        {
+            fileNames = imagesFolder.list();
+            for (int i = 0; i<fileNames.length; i++ ){
+             Log.d("ADebugTag", fileNames[i]);
+            }t
+            Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getPath() + "/" + fileNames[0]);
+            license.setImageBitmap(mBitmap);
+        }
+        ///Now set this bitmap on imageview
     }
 
     @Override

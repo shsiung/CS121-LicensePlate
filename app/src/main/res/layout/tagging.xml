@@ -5,9 +5,18 @@
     android:orientation="vertical"
     android:id="@+id/taggingMainView">
 
+    <ImageView
+        android:id="@+id/license"
+        android:src="@drawable/ic_launcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        />
 
     <Spinner
         android:id="@+id/osversions"
+        android:layout_below="@+id/license"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" />
