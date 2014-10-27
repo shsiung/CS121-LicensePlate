@@ -25,15 +25,52 @@
             android:layout_weight="0.2"
             android:text="States:"
             />
-
         <Spinner
             android:id="@+id/osversions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/numberLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/stateLayout" >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="Plate Number:"
+            />
+        <EditText
+            android:id="@+id/plateNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/specialLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/numberLayout" >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="Plate Number:"
+            />
+        <CheckBox
+            android:id="@+id/specialCB"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
     </LinearLayout>
 
     <TextView
@@ -41,7 +78,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/stateLayout"
+        android:layout_below="@+id/specialLayout"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp" />
+
+
 </RelativeLayout>

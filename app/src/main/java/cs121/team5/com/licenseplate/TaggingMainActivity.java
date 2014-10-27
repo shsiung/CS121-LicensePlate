@@ -70,7 +70,6 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                 }
             }
         }
-        ///Now set this bitmap on imageview
     }
 
     @Override
@@ -93,7 +92,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 //        String photoDir = newPhoto.composeName();
 //        // Load the photo to display in a photo view from currentPhotoDir
 //        this.imageView.setImageURI(Uri.parse(photoDir));
-//        this.updatePhotoAttribute(newPhoto);
+//
 //    }
 
     private void renamePhoto(String oldname, String newname) {
