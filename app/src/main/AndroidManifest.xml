@@ -15,6 +15,14 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".GetPicActivity"
+            android:label="@string/title_activity_get_pic" >
+        </activity>
+        <activity
+            android:name=".TaggingMainActivity"
+            android:label="@string/title_activity_get_pic" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GetPicActivity"
+            android:name=".TaggingSearchViewActivity"
             android:label="@string/title_activity_get_pic" >
         </activity>
     </application>

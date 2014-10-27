@@ -23,7 +23,7 @@ public class GetPicActivity extends Activity {
     public static Camera isCameraAvailable(){
         Camera object = null;
         try {
-            object = Camera.open();
+            object = Camera.open(0);
             // Log.d("ADebugTag", "Camera open!");
         }
         catch (Exception e){
@@ -67,6 +67,7 @@ public class GetPicActivity extends Activity {
 
             int imageNum = 0;
             File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "License_Plate");
+            Log.d("ADebugTag",imagesFolder.getAbsolutePath());
             if (!imagesFolder.exists()) {
                 imagesFolder.mkdirs();
             }

@@ -6,39 +6,42 @@
     android:id="@+id/taggingMainView">
 
     <ImageView
-        android:id="@+id/license"
-        android:src="@drawable/ic_launcher"
+        android:id="@+id/licenseView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        />
+        android:src="@drawable/ic_launcher"
+        android:layout_centerHorizontal="true"/>
 
-    <Spinner
-        android:id="@+id/osversions"
-        android:layout_below="@+id/license"
+    <LinearLayout
+        android:id="@+id/stateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:orientation="horizontal"
+        android:layout_below="@id/licenseView" >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="States:"
+            />
+
+        <Spinner
+            android:id="@+id/osversions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
 
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/osversions"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp" />
-
+    </LinearLayout>
 
     <TextView
         android:id="@+id/selVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/osversions"
+        android:layout_below="@+id/stateLayout"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp" />
-
 </RelativeLayout>

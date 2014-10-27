@@ -3,10 +3,9 @@ package cs121.team5.com.licenseplate;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -16,18 +15,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
-import java.net.URI;
 import java.util.HashMap;
 
 import static android.app.PendingIntent.getActivity;
 
 public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
-    Spinner spinnerStates;
-    TextView selState;
-    ImageView imageView;
-    HashMap<String, PhotoAttributes> photosByName_;
-    PhotoAttributes currentPhoto_;
-    ImageView license;
+    private Spinner spinnerStates;
+    private TextView selState;
+    private HashMap<String, PhotoAttributes> photosByName_;
+    private PhotoAttributes currentPhoto_;
+    private ImageView license;
     private String[] state = { "CA", "VA", "NJ", "TN",
             "TA", "WS"};
 
@@ -35,10 +32,10 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Here we should load the program data saved to file and initiate photosByName_
-//        this.loadHashMap();
+//      this.loadHashMap();
         this.currentPhoto_ = null;
-        license = (ImageView) findViewById(R.id.license);
-        setContentView(R.layout.tagging);
+        setContentView(R.layout.activity_tagging);
+        license = (ImageView) findViewById(R.id.licenseView);
         System.out.println(state.length);
         selState = (TextView) findViewById(R.id.selVersion);
         spinnerStates = (Spinner) findViewById(R.id.osversions);
@@ -52,16 +49,26 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     }
 
     public void setImageView() {
-        File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "License_Plate");
+        File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate");
         String[] fileNames;
-        if(imagesFolder.exists())
-        {
+        if(imagesFolder.exists()) {
             fileNames = imagesFolder.list();
-            for (int i = 0; i<fileNames.length; i++ ){
-             Log.d("ADebugTag", fileNames[i]);
+            if(new File(imagesFolder.getAbsolutePath() + "/" + fileNames[0]).exists()) {
+                BitmapFactory.Options options;
+                try {
+                    options = new BitmapFactory.Options();
+                    options.inSampleSize = 2;  // Shrink the picture by a factor of 2
+                    Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getAbsolutePath() + "/" + fileNames[0], options);
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(-90);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                    if (mBitmap != null) {
+                        license.setImageBitmap(rotatedBitmap);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getPath() + "/" + fileNames[0]);
-            license.setImageBitmap(mBitmap);
         }
         ///Now set this bitmap on imageview
     }
@@ -82,12 +89,12 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 //                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 //    }
 
-    public void loadPhoto(PhotoAttributes newPhoto) {
-        String photoDir = newPhoto.composeName();
-        // Load the photo to display in a photo view from currentPhotoDir
-        this.imageView.setImageURI(Uri.parse(photoDir));
-        this.updatePhotoAttribute(newPhoto);
-    }
+//    public void loadPhoto(PhotoAttributes newPhoto) {
+//        String photoDir = newPhoto.composeName();
+//        // Load the photo to display in a photo view from currentPhotoDir
+//        this.imageView.setImageURI(Uri.parse(photoDir));
+//        this.updatePhotoAttribute(newPhoto);
+//    }
 
     private void renamePhoto(String oldname, String newname) {
         File from = new File(oldname);
