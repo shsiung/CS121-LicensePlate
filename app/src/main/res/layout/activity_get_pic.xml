@@ -26,12 +26,27 @@
         <!--android:layout_width="fill_parent"-->
         <!--android:layout_height="500dp" />-->
 
-        <Button
-            android:id="@+id/button_capture"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="snapIt"
-            android:text="@string/Capture" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_capture"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:onClick="SnapIt"
+                android:text="@string/Capture" />
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:onClick="TagPicture"
+                android:text="@string/PictureSubmit" />
+
+        </LinearLayout>
 
 
     </LinearLayout>

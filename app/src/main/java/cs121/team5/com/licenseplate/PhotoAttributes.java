@@ -4,12 +4,17 @@ package cs121.team5.com.licenseplate;
  */
 public class PhotoAttributes {
 
-    private String directory_;
-    private String dirRoot_;
-    private String name_;
-    private String state_;
-    private String number_;
-    private Boolean special_;
+    public String name_;
+
+    public String directory_;
+    public String dirRoot_;
+    public String state_;
+    public String number_;
+    public Boolean special_;
+
+    public PhotoAttributes(){
+        // Do nothing.
+    }
 
     public PhotoAttributes(String directory, Boolean special, String state, String number) {
         this.directory_ = directory;
@@ -37,28 +42,13 @@ public class PhotoAttributes {
     public String composeName() {
         StringBuilder builder = new StringBuilder();
         builder.append(this.state_);
-        builder.append('+');
+        builder.append("_");
         builder.append(this.number_);
-        builder.append('+');
+        builder.append("_");
         builder.append(this.special_);
+        builder.append(".jpg");
         this.name_ = builder.toString();
         return this.name_;
-    }
-
-    public void setState(String state) {
-        this.state_ = state;
-    }
-
-    public String getState() {
-        return this.state_;
-    }
-
-    public void setNumber_(String number) {
-        this.number_ = number;
-    }
-
-    public String getNumber_() {
-        return this.number_;
     }
 
 

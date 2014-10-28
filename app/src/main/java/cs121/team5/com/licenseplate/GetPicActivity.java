@@ -1,6 +1,8 @@
 package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Picture;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,15 +21,15 @@ public class GetPicActivity extends Activity {
 
     private Camera cameraObject;
     private ShowCamera showCamera;
+    private boolean PictureTaken;
+    private int CurrentLicenseNum;
 
     public static Camera isCameraAvailable(){
         Camera object = null;
         try {
             object = Camera.open(0);
-            // Log.d("ADebugTag", "Camera open!");
         }
         catch (Exception e){
-            // Log.d("ADebugTag","Camera not available!");
         }
         return object;
     }
@@ -40,52 +42,47 @@ public class GetPicActivity extends Activity {
         showCamera = new ShowCamera(this, cameraObject);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(showCamera);
+        PictureTaken = false;
+        CurrentLicenseNum = 0;
     }
 
-    public void snapIt(View view){
+    public void SnapIt(View view){
         cameraObject.takePicture(null, null, capturedIt);
     }
 
-    private Camera.PictureCallback capturedIt = new Camera.PictureCallback() {
+    public void TagPicture(View view){
+        Intent tagPic = new Intent(this, TaggingMainActivity.class);
+        tagPic.putExtra("NameOfFile","license_" + String.valueOf(CurrentLicenseNum) + ".jpg");
+        startActivity(tagPic);
+    }
 
-        //        @Override
-//        public void onPictureTaken(byte[] data, Camera camera) {
-//
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-//            if(bitmap==null){
-//                Toast.makeText(getApplicationContext(), "not taken", Toast.LENGTH_SHORT).show();
-//            }
-//            else
-//            {
-//                Toast.makeText(getApplicationContext(), "taken", Toast.LENGTH_SHORT).show();
-//            }
-//            cameraObject.release();
-//            pic.setImageBitmap(bitmap);
-//            //finish();
-//        }
+    private Camera.PictureCallback capturedIt = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera arg1) {
 
-            int imageNum = 0;
             File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "License_Plate");
             Log.d("ADebugTag",imagesFolder.getAbsolutePath());
             if (!imagesFolder.exists()) {
                 imagesFolder.mkdirs();
             }
             imagesFolder.mkdirs();
-            String fileName = "image_" + String.valueOf(imageNum) + ".jpg";
+            String fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
             File output = new File(imagesFolder, fileName);
-            while (output.exists()) {
-                imageNum++;
-                fileName = "image_" + String.valueOf(imageNum) + ".jpg";
+            while (output.exists() && !PictureTaken) {
+                CurrentLicenseNum++;
+                fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
                 output = new File(imagesFolder, fileName);
             }
             try {
+
                 FileOutputStream imageFileOS = new FileOutputStream(output);
                 imageFileOS.write(data);
                 imageFileOS.flush();
                 imageFileOS.close();
 
-                Toast.makeText(getApplicationContext(), "saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                               "License " + String.valueOf(CurrentLicenseNum)+ " Saved",
+                               Toast.LENGTH_SHORT).show();
+                PictureTaken = true;
 
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
