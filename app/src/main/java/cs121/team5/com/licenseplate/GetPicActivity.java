@@ -53,6 +53,7 @@ public class GetPicActivity extends Activity {
     public void TagPicture(View view){
         Intent tagPic = new Intent(this, TaggingMainActivity.class);
         tagPic.putExtra("NameOfFile","license_" + String.valueOf(CurrentLicenseNum) + ".jpg");
+        finish();
         startActivity(tagPic);
     }
 
