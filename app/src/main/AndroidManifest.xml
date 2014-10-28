@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cs121.team5.com.licenseplate" >
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +23,14 @@
         </activity>
         <activity
             android:name=".GetPicActivity"
+            android:label="@string/title_activity_get_pic" >
+        </activity>
+        <activity
+            android:name=".TaggingMainActivity"
+            android:label="@string/title_activity_tagging" >
+        </activity>
+        <activity
+            android:name=".TaggingSearchViewActivity"
             android:label="@string/title_activity_get_pic" >
         </activity>
     </application>

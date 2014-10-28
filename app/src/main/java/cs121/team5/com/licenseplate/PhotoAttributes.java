@@ -3,6 +3,19 @@ package cs121.team5.com.licenseplate;
  * Created by cui_cindy on 10/6/14.
  */
 public class PhotoAttributes {
+
+    public String name_;
+
+    public String directory_;
+    public String dirRoot_;
+    public String state_;
+    public String number_;
+    public Boolean special_;
+
+    public PhotoAttributes(){
+        // Do nothing.
+    }
+
     public PhotoAttributes(String directory, Boolean special, String state, String number) {
         this.directory_ = directory;
         this.special_ = special;
@@ -27,40 +40,16 @@ public class PhotoAttributes {
     }
 
     public String composeName() {
-        //hihihi
-
         StringBuilder builder = new StringBuilder();
         builder.append(this.state_);
+        builder.append("_");
         builder.append(this.number_);
+        builder.append("_");
         builder.append(this.special_);
+        builder.append(".jpg");
         this.name_ = builder.toString();
-        // This should ideally return the directory, which we need to figure out how to parse
-        // and compose.
-        // It might also be useful to rename the photo here.
         return this.name_;
     }
 
-    public void setState(String state) {
-        this.state_ = state;
-    }
-
-    public String getState() {
-        return this.state_;
-    }
-
-    public void setNumber_(String number) {
-        this.number_ = number;
-    }
-
-    public String getNumber_() {
-        return this.number_;
-    }
-
-    String directory_;
-    String dirRoot_;
-    String name_;
-    String state_;
-    String number_;
-    Boolean special_;
 
 }

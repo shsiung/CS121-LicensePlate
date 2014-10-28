@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.hardware.Camera;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -55,18 +57,32 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         int screenWidth = getWidth();
         int screenHeight = getHeight();
 
+        // Color to use
+        int outerFillColor = 0x77000000;
 
         //  Set paint options
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(3);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.argb(255, 255, 255, 000));
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(outerFillColor);
 
-        canvas.drawLine((screenWidth/8)*6,0,(screenWidth/8)*6,screenHeight,paint);
-        canvas.drawLine((screenWidth/8)*2,0,(screenWidth/8)*2,screenHeight,paint);
-        canvas.drawLine(0,(screenHeight/3)*2,screenWidth,(screenHeight/3)*2,paint);
-        canvas.drawLine(0,(screenHeight/3),screenWidth,(screenHeight/3),paint);
+        //Fill the screen
+        canvas.drawPaint(paint);
+
+        //Empty a rectangle in the center
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
+        //Adjust the dimension values as needed
+        canvas.drawRect((screenWidth/5),(screenHeight/5),4*(screenWidth/5),4*(screenHeight/5), paint);
+//
+//        paint.setStrokeWidth(3);
+//        paint.setStyle(Paint.Style.STROKE);
+//        paint.setColor(Color.argb(255, 255, 255, 000));
+//
+//        canvas.drawLine((screenWidth/8)*6,0,(screenWidth/8)*6,screenHeight,paint);
+//        canvas.drawLine((screenWidth/8)*2,0,(screenWidth/8)*2,screenHeight,paint);
+//        canvas.drawLine(0,(screenHeight/3)*2,screenWidth,(screenHeight/3)*2,paint);
+//        canvas.drawLine(0,(screenHeight/3),screenWidth,(screenHeight/3),paint);
 
     }
 

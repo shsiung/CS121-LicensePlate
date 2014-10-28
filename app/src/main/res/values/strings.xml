@@ -7,7 +7,10 @@
     <string name="take_picture">Get picture!</string>
     <string name="Capture">Capture</string>
     <string name="title_activity_get_pic">Camera</string>
+    <string name="title_activity_tagging">Add Tags</string>
     <string name="taggingMainView">Tagging Main View</string>
     <string name="preference_file_key">License_Plate_Records</string>
-
+    <string name="SearchView">View Current Plates</string>
+    <string name="PictureSubmit">Done</string>
+    <string name="Save">Save</string>
 </resources>
