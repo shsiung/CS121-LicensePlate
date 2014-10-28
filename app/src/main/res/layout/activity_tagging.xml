@@ -20,7 +20,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/licenseView" >
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="States:"
@@ -40,7 +40,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/stateLayout" >
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="Plate Number:"
@@ -54,6 +54,7 @@
             android:inputType="text"
             android:imeOptions="actionDone"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:hint="Ex. 8GPS292"
             />
     </LinearLayout>
 
@@ -64,7 +65,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/numberLayout" >
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="Special Plate:"
