@@ -43,4 +43,10 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    // Called when the user clicks the view plates button
+    public void searchView(View view){
+        Intent intent =new Intent(this, TaggingSearchViewActivity.class);
+        startActivity(intent);
+    }
+
 }
