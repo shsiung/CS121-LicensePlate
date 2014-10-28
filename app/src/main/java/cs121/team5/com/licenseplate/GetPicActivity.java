@@ -27,7 +27,7 @@ public class GetPicActivity extends Activity {
     public static Camera isCameraAvailable(){
         Camera object = null;
         try {
-            object = Camera.open(0);
+            object = Camera.open();
         }
         catch (Exception e){
         }
