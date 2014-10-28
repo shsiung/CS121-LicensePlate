@@ -7,10 +7,11 @@ public class PhotoAttributes {
     public String name_;
 
     public String directory_;
-    public String dirRoot_;
     public String state_;
     public String number_;
     public Boolean special_;
+    public Double longtitude_;
+    public Double latitude_;
 
     public PhotoAttributes(){
         // Do nothing.
