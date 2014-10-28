@@ -1,19 +1,40 @@
 package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TabHost;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends TabActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TabHost tabHost = getTabHost();
+
+        // Tab for Photos
+        TabHost.TabSpec cameraSpec = tabHost.newTabSpec("Camera");
+        // setting Title and Icon for the Tab
+        cameraSpec.setIndicator("Camera", getResources().getDrawable(R.drawable.ic_launcher));
+        Intent photosIntent = new Intent(this, GetPicActivity.class);
+        cameraSpec.setContent(photosIntent);
+
+        // Tab for Songs
+        TabHost.TabSpec viewPlatesSpec = tabHost.newTabSpec("View Plates");
+        viewPlatesSpec.setIndicator("View Plates", getResources().getDrawable(R.drawable.ic_launcher));
+        Intent songsIntent = new Intent(this, TaggingSearchViewActivity.class);
+        viewPlatesSpec.setContent(songsIntent);
+
+        // Adding all TabSpec to TabHost
+        tabHost.addTab(cameraSpec); // Adding photos tab
+        tabHost.addTab(viewPlatesSpec); // Adding songs tab
     }
     // Default functions
     @Override
