@@ -43,10 +43,14 @@ public class PhotoAttributes {
     public String composeName() {
         StringBuilder builder = new StringBuilder();
         builder.append(this.state_);
-        builder.append("_");
+        builder.append("*");
         builder.append(this.number_);
-        builder.append("_");
+        builder.append("*");
         builder.append(this.special_);
+        builder.append("*");
+        builder.append(this.latitude_);
+        builder.append("*");
+        builder.append(this.longtitude_);
         builder.append(".jpg");
         this.name_ = builder.toString();
         return this.name_;
