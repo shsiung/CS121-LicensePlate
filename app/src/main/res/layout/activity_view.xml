@@ -42,12 +42,6 @@
             android:textFilterEnabled="true"
             android:transcriptMode="disabled" />
 
-        <com.pz.filter.view.MyLetterListView
-            android:id="@+id/MyLetterListView01"
-            android:layout_width="30dip"
-            android:layout_height="fill_parent"
-            android:layout_alignParentRight="true"
-            android:background="#40000000" />
     </RelativeLayout>
 
 </LinearLayout> 

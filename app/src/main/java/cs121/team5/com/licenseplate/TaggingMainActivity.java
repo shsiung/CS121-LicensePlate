@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,29 +24,32 @@ import java.io.File;
 
 public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
     private Spinner spinnerStates;
-    private TextView selState;
+    private TextView gpsLocation;
     private PhotoAttributes currentPhoto_;
     private ImageView license;
     private EditText licenseNum;
     private CheckBox specialPlate;
+
     private String[] state = { "CA", "VA", "NJ", "TN",
             "TA", "WS"};
 
     private String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
 
+    private GPSTracker gps;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.currentPhoto_ = new PhotoAttributes();
+        currentPhoto_ = new PhotoAttributes();
+        gps = new GPSTracker(this);
 
         // Get the argument from the intent called by parent activity
         Intent argument = getIntent();
         try {
             currentPhoto_.name_ = argument.getStringExtra("NameOfFile");
             currentPhoto_.directory_ = dirPath;
-            Log.d("DebugTag","Name of the file is:" + currentPhoto_.name_);
+            Log.d("NameOfFile:","Name of the file is:" + currentPhoto_.name_);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +57,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
         setContentView(R.layout.activity_tagging);
         license = (ImageView) findViewById(R.id.licenseView);
-        selState = (TextView) findViewById(R.id.selVersion);
+        gpsLocation = (TextView) findViewById(R.id.gpsTextView);
         spinnerStates = (Spinner) findViewById(R.id.osversions);
         licenseNum = (EditText) findViewById(R.id.plateNumber);
         specialPlate = (CheckBox) findViewById(R.id.specialCB);
@@ -66,6 +70,25 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         spinnerStates.setOnItemSelectedListener(this);
 
         loadLicensePic(currentPhoto_.name_);
+        loadGPSLocation();
+
+    }
+
+    public void loadGPSLocation(){
+        gps.showSettingsAlert();
+        double lat = 0;
+        double longt = 0;
+        if(gps.canGetLocation()) {
+            lat = gps.getLatitude();    // returns latitude
+            longt = gps.getLongitude(); // returns longitude
+            gpsLocation.setText(String.valueOf(lat) + ", " + String.valueOf(longt));
+            currentPhoto_.latitude_ = lat;
+            currentPhoto_.longtitude_ = longt;
+        }
+        else{
+            gpsLocation.setText("INVALID");
+        }
+
     }
 
     public void loadLicensePic(String NameOfFile) {
@@ -97,13 +120,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
     private void renamePhoto(String oldName, String newName) {
         File from = new File(oldName);
-        if (from.exists()){
-            Log.d("DebugTag","Old file exists!");
-        }
         File to = new File(newName);
-        if (!to.exists()){
-            Log.d("DebugTag","Old file doesnt exist!");
-        }
         from.renameTo(to);
     }
 
@@ -120,8 +137,11 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     public void onItemSelected(AdapterView<?> parent, View view, int position,
                                long id) {
         spinnerStates.setSelection(position);
-        String selState = (String) spinnerStates.getSelectedItem();
-        this.selState.setText("Selected State Name:" + selState);
+
+        if(gps.canGetLocation()) {
+            gps.getLatitude(); // returns latitude
+            gps.getLongitude(); // returns longitude
+        }
     }
 
     @Override
@@ -136,7 +156,8 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         Toast.makeText(getApplicationContext(),
                 "License Plate Tags Updated",
                 Toast.LENGTH_SHORT).show();
-        //();
+        gps.stopUsingGPS();
+        finish();
     }
 
 }

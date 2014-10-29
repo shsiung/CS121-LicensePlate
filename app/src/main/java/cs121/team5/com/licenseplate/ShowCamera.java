@@ -52,8 +52,7 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
     {
         //  Find Screen size first
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-//            int screenWidth = metrics.widthPixels;
-//            int screenHeight = (int) (metrics.heightPixels*0.9);
+
         int screenWidth = getWidth();
         int screenHeight = getHeight();
 
@@ -73,16 +72,8 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
         //Adjust the dimension values as needed
-        canvas.drawRect((screenWidth/5),(screenHeight/5),4*(screenWidth/5),4*(screenHeight/5), paint);
-//
-//        paint.setStrokeWidth(3);
-//        paint.setStyle(Paint.Style.STROKE);
-//        paint.setColor(Color.argb(255, 255, 255, 000));
-//
-//        canvas.drawLine((screenWidth/8)*6,0,(screenWidth/8)*6,screenHeight,paint);
-//        canvas.drawLine((screenWidth/8)*2,0,(screenWidth/8)*2,screenHeight,paint);
-//        canvas.drawLine(0,(screenHeight/3)*2,screenWidth,(screenHeight/3)*2,paint);
-//        canvas.drawLine(0,(screenHeight/3),screenWidth,(screenHeight/3),paint);
+        canvas.drawRect((screenWidth/9),(screenHeight/3),8*(screenWidth/9),2*(screenHeight/3), paint);
+
 
     }
 

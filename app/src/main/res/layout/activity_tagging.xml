@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_launcher_plate"
         android:layout_centerHorizontal="true"/>
 
     <LinearLayout
@@ -20,7 +20,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/licenseView" >
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="States:"
@@ -40,7 +40,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/stateLayout" >
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="Plate Number:"
@@ -50,6 +50,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:singleLine="true"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:hint="Ex. 8GPS292"
             />
     </LinearLayout>
 
@@ -60,7 +65,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/numberLayout" >
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="Special Plate:"
@@ -70,17 +75,30 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/selVersion"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/gpsLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/specialLayout"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp" />
+        android:orientation="horizontal"
+        android:layout_below="@id/specialLayout" >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="Current GPS Location:"
+            />
+        <TextView
+            android:id="@+id/gpsTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            />
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_capture"
@@ -88,7 +106,8 @@
         android:layout_height="wrap_content"
         android:onClick="SaveTag"
         android:text="@string/Save"
-        android:layout_below="@+id/selVersion"
+        android:layout_marginTop="100dp"
+        android:layout_below="@+id/gpsLayout"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

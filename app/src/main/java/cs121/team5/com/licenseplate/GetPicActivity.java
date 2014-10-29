@@ -1,13 +1,15 @@
 package cs121.team5.com.licenseplate;
 
-import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.graphics.Picture;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -17,12 +19,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-public class GetPicActivity extends Activity {
+public class GetPicActivity extends Fragment {
 
     private Camera cameraObject;
     private ShowCamera showCamera;
     private boolean PictureTaken;
     private int CurrentLicenseNum;
+    private FrameLayout camPreview;
 
     public static Camera isCameraAvailable(){
         Camera object = null;
@@ -35,15 +38,43 @@ public class GetPicActivity extends Activity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_pic);
         cameraObject = isCameraAvailable();
-        showCamera = new ShowCamera(this, cameraObject);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(showCamera);
+        showCamera = new ShowCamera(getActivity(), cameraObject);
         PictureTaken = false;
         CurrentLicenseNum = 0;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_get_pic, container, false);
+
+        if (showCamera == null){
+            cameraObject = isCameraAvailable();
+            showCamera = new ShowCamera(getActivity(), cameraObject);
+        }
+        camPreview = (FrameLayout) v.findViewById(R.id.camera_preview);
+        camPreview.addView(showCamera);
+
+        Button captureBtn = (Button) v.findViewById(R.id.button_capture);
+        captureBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SnapIt(v);
+            }
+        });
+
+        Button doneBtn = (Button) v.findViewById(R.id.submit);
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TagPicture(v);
+            }
+        });
+
+        return v;
     }
 
     public void SnapIt(View view){
@@ -51,9 +82,17 @@ public class GetPicActivity extends Activity {
     }
 
     public void TagPicture(View view){
-        Intent tagPic = new Intent(this, TaggingMainActivity.class);
-        tagPic.putExtra("NameOfFile","license_" + String.valueOf(CurrentLicenseNum) + ".jpg");
-        startActivity(tagPic);
+        if(PictureTaken) {
+            Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
+            tagPic.putExtra("NameOfFile", "license_" + String.valueOf(CurrentLicenseNum) + ".jpg");
+            onDestroy();
+            startActivity(tagPic);
+        }
+        else {
+            Toast.makeText(getActivity(),
+                    "You haven't taken a photo yet!",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Camera.PictureCallback capturedIt = new Camera.PictureCallback() {
@@ -79,7 +118,7 @@ public class GetPicActivity extends Activity {
                 imageFileOS.flush();
                 imageFileOS.close();
 
-                Toast.makeText(getApplicationContext(),
+                Toast.makeText(getActivity(),
                                "License " + String.valueOf(CurrentLicenseNum)+ " Saved",
                                Toast.LENGTH_SHORT).show();
                 PictureTaken = true;
@@ -99,14 +138,39 @@ public class GetPicActivity extends Activity {
     };
 
     @Override
-    protected void onPause()
+    public void onPause()
     {
         super.onPause();
         if (cameraObject != null) {
             cameraObject.stopPreview();
+            camPreview.removeView(showCamera);
             cameraObject.release();
             cameraObject = null;
         }
+        PictureTaken = false;
+        showCamera = null;
     }
 
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        if (cameraObject != null) {
+            cameraObject.stopPreview();
+            camPreview.removeView(showCamera);
+            cameraObject.release();
+            cameraObject = null;
+            showCamera = null;
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (showCamera == null){
+            cameraObject = isCameraAvailable();
+            showCamera = new ShowCamera(getActivity(), cameraObject);
+        }
+    }
 }

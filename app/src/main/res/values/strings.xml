@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">LicensePlate</string>
+    <string name="app_name">VehiCool</string>
     <string name="hello_world">Hello world!!!!</string>
     <string name="action_settings">Settings</string>
     <string name="take_picture">Get picture!</string>
@@ -11,6 +11,6 @@
     <string name="taggingMainView">Tagging Main View</string>
     <string name="preference_file_key">License_Plate_Records</string>
     <string name="SearchView">View Current Plates</string>
-    <string name="PictureSubmit">Done</string>
+    <string name="PictureSubmit">Edit Plate</string>
     <string name="Save">Save</string>
 </resources>
