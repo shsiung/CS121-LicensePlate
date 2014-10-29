@@ -1,12 +1,16 @@
 package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -38,7 +42,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-public class TaggingSearchViewActivity extends Activity {
+public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
     SearchView searchView;
     Object[] names;
@@ -59,6 +63,20 @@ public class TaggingSearchViewActivity extends Activity {
 //            searchView.setOnQueryTextListener(this);
 //            searchView.setSubmitButtonEnabled(false);
 //        }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_view, container, false);
+
+        return v;
+    }
+
 
     public File[] Search(String keyword) {
         String myDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
