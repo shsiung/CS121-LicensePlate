@@ -17,31 +17,5 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"  />
 
-        <FrameLayout
-            android:id="@+id/realtabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
     </LinearLayout>
-
-    <!--<Button-->
-        <!--android:id="@+id/getPicture"-->
-        <!--android:layout_width="200dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="getPicture"-->
-        <!--android:text="@string/Capture"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_centerHorizontal="true" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/searchView"-->
-        <!--android:layout_width="200dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:onClick="searchView"-->
-        <!--android:text="@string/SearchView"-->
-        <!--style="@style/CustomButton"-->
-        <!--android:layout_below="@+id/getPicture"/>-->
-
-
 </android.support.v4.app.FragmentTabHost>
