@@ -1,40 +1,48 @@
 package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
-import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TabHost;
+import android.support.v4.app.FragmentActivity;
 
+public class MainActivity extends Activity {
 
-public class MainActivity extends TabActivity {
+    private FragmentTabHost mTabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost tabHost = getTabHost();
+        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        //mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
-        // Tab for Photos
-        TabHost.TabSpec cameraSpec = tabHost.newTabSpec("Camera");
-        // setting Title and Icon for the Tab
-        cameraSpec.setIndicator("Camera", getResources().getDrawable(R.drawable.ic_launcher));
-        Intent photosIntent = new Intent(this, GetPicActivity.class);
-        cameraSpec.setContent(photosIntent);
+//        mTabHost.addTab(mTabHost.newTabSpec("camera").setIndicator("Camera"),
+//                GetPicActivity.class, null);
+//
+//        mTabHost.addTab(mTabHost.newTabSpec("viewPlate").setIndicator("View Plates"),
+//                TaggingSearchViewActivity.class, null);
 
-        // Tab for Songs
-        TabHost.TabSpec viewPlatesSpec = tabHost.newTabSpec("View Plates");
-        viewPlatesSpec.setIndicator("View Plates", getResources().getDrawable(R.drawable.ic_launcher));
-        Intent songsIntent = new Intent(this, TaggingSearchViewActivity.class);
-        viewPlatesSpec.setContent(songsIntent);
-
-        // Adding all TabSpec to TabHost
-        tabHost.addTab(cameraSpec); // Adding photos tab
-        tabHost.addTab(viewPlatesSpec); // Adding songs tab
+//        // Tab for Photos
+//        TabHost.TabSpec cameraSpec = tabHost.newTabSpec("Camera");
+//        // setting Title and Icon for the Tab
+//        cameraSpec.setIndicator("Camera", getResources().getDrawable(R.drawable.ic_launcher));
+//        Intent cameraIntent = new Intent(this, GetPicActivity.class);
+//        cameraSpec.setContent(cameraIntent);
+//
+//        // Tab for Songs
+//        TabHost.TabSpec viewPlatesSpec = tabHost.newTabSpec("View Plates");
+//        viewPlatesSpec.setIndicator("View Plates", getResources().getDrawable(R.drawable.ic_launcher));
+//        Intent serachViewIntent = new Intent(this, TaggingSearchViewActivity.class);
+//        viewPlatesSpec.setContent(serachViewIntent);
+//
+//        // Adding all TabSpec to TabHost
+//        tabHost.addTab(cameraSpec); // Adding photos tab
+//        tabHost.addTab(viewPlatesSpec); // Adding songs tab
     }
     // Default functions
     @Override
