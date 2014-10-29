@@ -98,7 +98,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                 BitmapFactory.Options options;
                 try {
                     options = new BitmapFactory.Options();
-                    options.inSampleSize = 4;  // Shrink the picture by a factor of 2
+                    options.inSampleSize = 1;  // Shrink the picture by a factor of 2
                     Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getAbsolutePath() + "/" + NameOfFile, options);
                     Matrix matrix = new Matrix();
                     matrix.postRotate(90);
