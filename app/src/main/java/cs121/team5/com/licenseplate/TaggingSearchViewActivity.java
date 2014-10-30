@@ -1,46 +1,32 @@
 package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.support.v4.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
-
-/**
- * Created by Huameng on 2014/10/14.
- */
-//public class TaggingSearchViewActivity {
-//
-
-//    }
-
-
-import java.util.ArrayList;
-
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
 
 public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
@@ -74,9 +60,36 @@ public class TaggingSearchViewActivity extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_view, container, false);
 
+        listView = (ListView) v
+                .findViewById(R.id.list);
         return v;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Display_Rows();
+
+    }
+
+    private void Display_Rows() {
+
+
+        String[] states = {"CA", "WA", "VA", "HI", "AZ"};
+
+        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+        for(int i=0; i<5; i++){
+            Map<String,Object> datum = new HashMap<String, Object>(2);
+            datum.put("thumbnail",String.valueOf(R.drawable.ic_launcher_plate));
+            datum.put("name", states[i]);
+            data.add(datum);
+        }
+
+
+        listView.setAdapter(new SimpleAdapter(getActivity(), data, R.layout.list_single, new String[] {"thumbnail","name"}, new int[] {R.id.img, R.id.txt}));
+
+    }
 
     public File[] Search(String keyword) {
         String myDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -96,6 +109,18 @@ public class TaggingSearchViewActivity extends Fragment {
             return null;
         }
     }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 //        public void initActionbar() {
 //            // 自定义标题栏
@@ -140,5 +165,5 @@ public class TaggingSearchViewActivity extends Fragment {
 //            // TODO Auto-generated method stub
 //            return false;
 //        }
-}
+
 

@@ -116,7 +116,8 @@
             android:onClick="SaveTag"
             android:text="@string/Save"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            style="@style/button_text"/>
     </RelativeLayout>
 
 </RelativeLayout>
