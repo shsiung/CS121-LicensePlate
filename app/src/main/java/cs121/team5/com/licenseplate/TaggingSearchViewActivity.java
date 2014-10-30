@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -62,6 +63,18 @@ public class TaggingSearchViewActivity extends Fragment {
 
         listView = (ListView) v
                 .findViewById(R.id.list);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                    long arg3) {
+
+                // TODO: Fill in the actual photo name clicked
+                Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
+                tagPic.putExtra("NameOfFile", "license_" + String.valueOf(0) + ".jpg");
+                startActivity(tagPic);
+            }
+        });
         return v;
     }
 

@@ -160,4 +160,10 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         finish();
     }
 
+    /** Called when the user clicks the Save button */
+    public void Cancel(View view) {
+        gps.stopUsingGPS();
+        finish();
+    }
+
 }

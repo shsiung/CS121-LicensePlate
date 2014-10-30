@@ -13,4 +13,8 @@
     <string name="SearchView">View Current Plates</string>
     <string name="PictureSubmit">Edit Plate</string>
     <string name="Save">Save</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Epmty"></string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+
 </resources>

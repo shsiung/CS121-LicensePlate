@@ -65,6 +65,12 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(outerFillColor);
 
+        //  Set paint options
+        Paint paintText = new Paint();
+        paintText.setAntiAlias(true);
+        paintText.setStyle(Paint.Style.FILL);
+        paintText.setARGB(255,0,255,0);
+        paintText.setStrokeWidth(10);
         //Fill the screen
         canvas.drawPaint(paint);
 
@@ -74,7 +80,15 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         //Adjust the dimension values as needed
         canvas.drawRect((screenWidth/9),(screenHeight/3),8*(screenWidth/9),2*(screenHeight/3), paint);
 
-
+        // Draw corner guidelines
+        canvas.drawLine((screenWidth/9),(screenHeight/3),(screenWidth/9),(screenHeight/3)+50,paintText);
+        canvas.drawLine((screenWidth/9),(screenHeight/3),(screenWidth/9)+50,(screenHeight/3),paintText);
+        canvas.drawLine(8*(screenWidth/9),(screenHeight/3),8*(screenWidth/9),(screenHeight/3)+50,paintText);
+        canvas.drawLine(8*(screenWidth/9),(screenHeight/3),8*(screenWidth/9)-50,(screenHeight/3),paintText);
+        canvas.drawLine((screenWidth/9),2*(screenHeight/3),(screenWidth/9),2*(screenHeight/3)-50,paintText);
+        canvas.drawLine((screenWidth/9),2*(screenHeight/3),(screenWidth/9)+50,2*(screenHeight/3),paintText);
+        canvas.drawLine(8*(screenWidth/9),2*(screenHeight/3),8*(screenWidth/9),2*(screenHeight/3)-50,paintText);
+        canvas.drawLine(8*(screenWidth/9),2*(screenHeight/3),8*(screenWidth/9)-50,2*(screenHeight/3),paintText);
     }
 
 }
