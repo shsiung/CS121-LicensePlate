@@ -19,7 +19,7 @@
         android:textColor="#ffffff"
         android:gravity="center_horizontal"
         android:layout_below="@id/imgLogo"
-        android:text="Design by Jerry Hsiung, Perry Holen" />
+        android:text="Designed by Jerry Hsiung, Perry Holen" />
 
     <!--<TextView-->
         <!--android:layout_width="fill_parent"-->

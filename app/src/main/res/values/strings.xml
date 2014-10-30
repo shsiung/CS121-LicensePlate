@@ -11,7 +11,7 @@
     <string name="taggingMainView">Tagging Main View</string>
     <string name="preference_file_key">License_Plate_Records</string>
     <string name="SearchView">View Current Plates</string>
-    <string name="PictureSubmit">Edit Plate</string>
+    <string name="PictureSubmit">Save Plate</string>
     <string name="Save">Save</string>
     <string name="Cancel">Cancel</string>
     <string name="Epmty"></string>
