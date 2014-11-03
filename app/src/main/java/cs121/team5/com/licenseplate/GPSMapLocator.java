@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class GPSMapLocator extends FragmentActivity {
+public class GPSMapLocator extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
