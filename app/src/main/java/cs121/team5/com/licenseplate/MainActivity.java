@@ -1,7 +1,6 @@
 package cs121.team5.com.licenseplate;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
@@ -31,6 +30,9 @@ public class MainActivity extends FragmentActivity {
 
         mTabHost.addTab(setIndicator(MainActivity.this,mTabHost.newTabSpec("viewPlate"),
                 R.drawable.tab_indicator_gen,"View Plates",R.drawable.serach_view_ic), TaggingSearchViewActivity.class,null);
+
+        mTabHost.addTab(setIndicator(MainActivity.this,mTabHost.newTabSpec("mapView"),
+                R.drawable.tab_indicator_gen,"Map View",R.drawable.map_ic), GPSMapLocator.class,null);
     }
 
 

@@ -33,7 +33,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     private String[] state = { "CA", "VA", "NJ", "TN",
             "TA", "WS"};
 
-    private String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+    private static String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
 
     private GPSTracker gps;
 
