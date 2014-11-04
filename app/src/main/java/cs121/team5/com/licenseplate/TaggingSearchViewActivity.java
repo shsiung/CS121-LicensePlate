@@ -100,7 +100,14 @@ public class TaggingSearchViewActivity extends Fragment {
 
     }
 
+
+
     private void Display_Rows() {
+
+        plateState.clear();
+        plateLatLng.clear();
+        plateName.clear();
+        platePic.clear();
 
         rowItems = new ArrayList<RowItem>();
         String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
