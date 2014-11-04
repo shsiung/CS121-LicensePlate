@@ -2,6 +2,7 @@ package cs121.team5.com.licenseplate;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.ThumbnailUtils;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -128,6 +129,13 @@ public class GetPicActivity extends Fragment {
                 // Only select the region we want
                 bitmap = ThumbnailUtils.extractThumbnail(bitmap, bitmap.getWidth()/9, bitmap.getHeight()/3);
 
+                //Rotate the bitmap
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                bitmap = Bitmap.createBitmap(bitmap, 0,0,
+                                            bitmap.getWidth(),bitmap.getHeight(),
+                                            matrix, true);
+                
                 // Convert it back to byte array data
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
