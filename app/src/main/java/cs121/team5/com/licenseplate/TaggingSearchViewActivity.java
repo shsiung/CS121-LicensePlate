@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -62,6 +63,18 @@ public class TaggingSearchViewActivity extends Fragment {
 
         listView = (ListView) v
                 .findViewById(R.id.list);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                    long arg3) {
+
+                // TODO: Fill in the actual photo name clicked
+                Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
+                tagPic.putExtra("NameOfFile", "license_" + String.valueOf(0) + ".jpg");
+                startActivity(tagPic);
+            }
+        });
         return v;
     }
 
@@ -111,59 +124,5 @@ public class TaggingSearchViewActivity extends Fragment {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-//        public void initActionbar() {
-//            // 自定义标题栏
-//            getActionBar().setDisplayShowHomeEnabled(false);
-//            getActionBar().setDisplayShowTitleEnabled(false);
-//            getActionBar().setDisplayShowCustomEnabled(true);
-//            LayoutInflater mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            View mTitleView = mInflater.inflate(R.layout.custom_action_bar_layout,
-//                    null);
-//            getActionBar().setCustomView(
-//                    mTitleView,
-//                    new ActionBar.LayoutParams(LayoutParams.MATCH_PARENT,
-//                            LayoutParams.WRAP_CONTENT));
-//            searchView = (SearchView) mTitleView.findViewById(R.id.search_view);
-//        }
-//
-//        public Object[] loadData() {
-//            mAllList.add("aa");
-//            mAllList.add("ddfa");
-//            mAllList.add("qw");
-//            mAllList.add("sd");
-//            mAllList.add("fd");
-//            mAllList.add("cf");
-//            mAllList.add("re");
-//            return mAllList.toArray();
-//        }
-//
-//        @Override
-//        public boolean onQueryTextChange(String newText) {
-//            if (TextUtils.isEmpty(newText)) {
-//                // Clear the text filter.
-//                listView.clearTextFilter();
-//            } else {
-//                // Sets the initial value for the text filter.
-//                listView.setFilterText(newText.toString());
-//            }
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean onQueryTextSubmit(String query) {
-//            // TODO Auto-generated method stub
-//            return false;
-//        }
 
 

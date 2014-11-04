@@ -33,7 +33,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     private String[] state = { "CA", "VA", "NJ", "TN",
             "TA", "WS"};
 
-    private String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+    private static String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
 
     private GPSTracker gps;
 
@@ -156,6 +156,12 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         Toast.makeText(getApplicationContext(),
                 "License Plate Tags Updated",
                 Toast.LENGTH_SHORT).show();
+        gps.stopUsingGPS();
+        finish();
+    }
+
+    /** Called when the user clicks the Save button */
+    public void Cancel(View view) {
         gps.stopUsingGPS();
         finish();
     }
