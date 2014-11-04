@@ -52,4 +52,5 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
         holder.imageView.setImageBitmap(rowItem.getImageBitmap());
         return convertView;
     }
+
 }

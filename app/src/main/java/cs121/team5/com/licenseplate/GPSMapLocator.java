@@ -72,7 +72,6 @@ public class GPSMapLocator extends Fragment{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return v;
     }
 
