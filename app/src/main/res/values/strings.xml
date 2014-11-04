@@ -16,5 +16,6 @@
     <string name="Cancel">Cancel</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_gpsmap_locator">GPSMapLocator</string>
+    <string name="image">Thumbnail Image</string>
 
 </resources>
