@@ -126,7 +126,7 @@ public class TaggingSearchViewActivity extends Fragment {
 
             Bitmap plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
             platePic.add(plateBitmap);
-        }
+        }//Test?
 
         //Create a row item for each plate file
         rowItems = new ArrayList<RowItem>();
