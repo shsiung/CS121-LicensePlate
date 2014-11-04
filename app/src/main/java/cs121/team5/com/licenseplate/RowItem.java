@@ -1,23 +1,26 @@
 package cs121.team5.com.licenseplate;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by perry_000 on 11/3/2014.
  */
 public class RowItem {
-    private int imageId;
+    private Bitmap imageBitmap;
     private String title;
     private String desc;
 
-    public RowItem(int imageId, String title, String desc) {
-        this.imageId = imageId;
+    public RowItem(Bitmap imageBitmap, String title, String desc) {
+        this.imageBitmap = imageBitmap;
         this.title = title;
         this.desc = desc;
     }
-    public int getImageId() {
-        return imageId;
+
+    public Bitmap getImageBitmap() {
+        return imageBitmap;
     }
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setImageBitmap(Bitmap imageBitmap) {
+        this.imageBitmap = imageBitmap;
     }
     public String getDesc() {
         return desc;

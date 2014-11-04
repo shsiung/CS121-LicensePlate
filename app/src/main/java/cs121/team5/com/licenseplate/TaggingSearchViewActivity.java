@@ -2,6 +2,8 @@ package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
@@ -21,6 +23,8 @@ import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -31,6 +35,12 @@ import java.util.regex.Pattern;
 
 public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
+    List<RowItem> rowItems;
+    ArrayList<String> plateName;
+    ArrayList<String> plateState;
+    ArrayList<LatLng> plateLatLng;
+    ArrayList<Bitmap> platePic;
+
     SearchView searchView;
     Object[] names;
     ArrayAdapter<String> adapter;
@@ -54,6 +64,10 @@ public class TaggingSearchViewActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        plateLatLng = new ArrayList<LatLng>();
+        plateName = new ArrayList<String>();
+        plateState = new ArrayList<String>();
+        platePic = new ArrayList<Bitmap>();
     }
 
     @Override
@@ -88,6 +102,25 @@ public class TaggingSearchViewActivity extends Fragment {
 
     private void Display_Rows() {
 
+        rowItems = new ArrayList<RowItem>();
+        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+        File plateDir = new File(dirPath);
+        String[] seperatedString = new String[5];
+
+        //Pull info from files to local arraylists
+        for(File f : plateDir.listFiles()){
+
+            seperatedString = f.getName().split("_");
+
+            plateState.add("State: " + seperatedString[0]);
+            plateLatLng.add(new LatLng(Double.parseDouble(seperatedString[3]),
+                                       Double.parseDouble(seperatedString[4])));
+            plateName.add("Plate: " + seperatedString[1]);
+
+            Bitmap plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+            platePic.add(plateBitmap);
+        }
+
 
         String[] states = {"CA", "WA", "VA", "HI", "AZ"};
 
@@ -100,7 +133,7 @@ public class TaggingSearchViewActivity extends Fragment {
         }
 
 
-        listView.setAdapter(new SimpleAdapter(getActivity(), data, R.layout.list_single, new String[] {"thumbnail","name"}, new int[] {R.id.img, R.id.txt}));
+        //listView.setAdapter(new SimpleAdapter(getActivity(), data, R.layout.list_single, new String[] {"thumbnail","name"}, new int[] {R.id.img, R.id.txt}));
 
     }
 
