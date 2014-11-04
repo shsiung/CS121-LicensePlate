@@ -46,20 +46,6 @@ public class TaggingSearchViewActivity extends Fragment {
     ArrayAdapter<String> adapter;
     ArrayList<String> mAllList = new ArrayList<String>();
 
-//        @Override
-//        protected void onCreate(Bundle savedInstanceState) {
-//            super.onCreate(savedInstanceState);
-//            setContentView(R.layout.activity_view);
-//            initActionbar();
-//            names = loadData();
-//            listView = (ListView) findViewById(R.id.listview);
-//            listView.setAdapter(new ArrayAdapter<Object>(getApplicationContext(),
-//                    android.R.layout.simple_expandable_list_item_1, names));
-//
-//            listView.setTextFilterEnabled(true);
-//            searchView.setOnQueryTextListener(this);
-//            searchView.setSubmitButtonEnabled(false);
-//        }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +112,7 @@ public class TaggingSearchViewActivity extends Fragment {
 
             Bitmap plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
             platePic.add(plateBitmap);
-        }//Test?
+        }
 
         //Create a row item for each plate file
         rowItems = new ArrayList<RowItem>();
@@ -138,22 +124,6 @@ public class TaggingSearchViewActivity extends Fragment {
         //Create and set the adapter
         CustomListViewAdapter adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
         listView.setAdapter(adapter);
-
-
-
-
-//        String[] states = {"CA", "WA", "VA", "HI", "AZ"};
-//
-//        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-//        for(int i=0; i<5; i++){
-//            Map<String,Object> datum = new HashMap<String, Object>(2);
-//            datum.put("thumbnail",String.valueOf(R.drawable.ic_launcher_plate));
-//            datum.put("name", states[i]);
-//            data.add(datum);
-//        }
-
-
-        //listView.setAdapter(new SimpleAdapter(getActivity(), data, R.layout.list_single, new String[] {"thumbnail","name"}, new int[] {R.id.img, R.id.txt}));
 
     }
 
