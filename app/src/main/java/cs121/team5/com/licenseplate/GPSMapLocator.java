@@ -1,5 +1,10 @@
 package cs121.team5.com.licenseplate;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -30,14 +35,11 @@ import java.util.ArrayList;
 public class GPSMapLocator extends Fragment{
 
     GoogleMap map;
-    ArrayList<LatLng> plateLatLng;
-    ArrayList<String> plateName;
+    private static String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        plateLatLng = new ArrayList<LatLng>();
-        plateName = new ArrayList<String>();
     }
 
     @Override
@@ -65,35 +67,59 @@ public class GPSMapLocator extends Fragment{
         // Make the view centering at U.S
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.850033,-87.6500523),3.5f));
 
-        importPlateLagLng();
-        addPlateMarkers();
+        try {
+            importPlateMarker();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return v;
     }
 
-    void importPlateLagLng(){
-        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+    void importPlateMarker(){
         File plateDir = new File(dirPath);
         String[] separatedString = new String[5];
+        String plateName;
+        LatLng latlng;
         for (File f : plateDir.listFiles()) {
             Log.d("DebugTag", f.getName());
             if (f.isFile())
                 separatedString = f.getName().split("_");
-                plateLatLng.add(new LatLng(Double.parseDouble(separatedString[3]),
-                                           Double.parseDouble(separatedString[4])));
-                plateName.add("Plate: " + separatedString[1]);
+                latlng = new LatLng(Double.parseDouble(separatedString[3]), Double.parseDouble(separatedString[4]));
+                plateName = "Plate: " + separatedString[1];
+                addPlateMarkers(loadLicensePic(f.getName()),
+                                latlng,
+                                plateName);
         }
     }
 
-    void addPlateMarkers(){
-
-        for (int i = 0 ; i <plateLatLng.size(); i++){
+    void addPlateMarkers(Bitmap plate, LatLng latlng, String plateName){
             map.addMarker(new MarkerOptions()
-                 .position(plateLatLng.get(i))
-                 .title(plateName.get(i))
+                 .position(latlng)
+                 .title(plateName)
                  .icon(BitmapDescriptorFactory
-                         .fromResource(R.drawable.ic_launcher)));
+                         .fromBitmap(plate)));
+    }
+
+    public Bitmap loadLicensePic(String NameOfFile) {
+        File imagesFolder = new File(dirPath);
+        if(imagesFolder.exists()) {
+            if(new File(imagesFolder.getAbsolutePath() + "/" + NameOfFile).exists()) {
+                BitmapFactory.Options options;
+                try {
+                    options = new BitmapFactory.Options();
+                    options.inSampleSize = 6;  // Shrink the picture by a factor of 2
+                    Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getAbsolutePath() + "/" + NameOfFile, options);
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                    return rotatedBitmap;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
+        return null;
     }
 
     @Override

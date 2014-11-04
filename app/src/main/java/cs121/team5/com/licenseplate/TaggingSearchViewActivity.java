@@ -2,6 +2,8 @@ package cs121.team5.com.licenseplate;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
@@ -21,6 +23,8 @@ import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -31,6 +35,12 @@ import java.util.regex.Pattern;
 
 public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
+    List<RowItem> rowItems;
+    ArrayList<String> plateName;
+    ArrayList<String> plateState;
+    ArrayList<LatLng> plateLatLng;
+    ArrayList<Bitmap> platePic;
+
     SearchView searchView;
     Object[] names;
     ArrayAdapter<String> adapter;
@@ -54,6 +64,10 @@ public class TaggingSearchViewActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        plateLatLng = new ArrayList<LatLng>();
+        plateName = new ArrayList<String>();
+        plateState = new ArrayList<String>();
+        platePic = new ArrayList<Bitmap>();
     }
 
     @Override
@@ -88,19 +102,51 @@ public class TaggingSearchViewActivity extends Fragment {
 
     private void Display_Rows() {
 
+        rowItems = new ArrayList<RowItem>();
+        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+        File plateDir = new File(dirPath);
+        String[] separatedString;
 
-        String[] states = {"CA", "WA", "VA", "HI", "AZ"};
+        //Pull info from files to local arraylists
+        for(File f : plateDir.listFiles()){
 
-        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        for(int i=0; i<5; i++){
-            Map<String,Object> datum = new HashMap<String, Object>(2);
-            datum.put("thumbnail",String.valueOf(R.drawable.ic_launcher_plate));
-            datum.put("name", states[i]);
-            data.add(datum);
+            separatedString = f.getName().split("_");
+
+            plateState.add("State: " + separatedString[0]);
+            plateLatLng.add(new LatLng(Double.parseDouble(separatedString[3]),
+                                       Double.parseDouble(separatedString[4])));
+            plateName.add("Plate: " + separatedString[1]);
+
+            Bitmap plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+            platePic.add(plateBitmap);
         }
 
+        //Create a row item for each plate file
+        rowItems = new ArrayList<RowItem>();
+        for(int i=0; i< plateState.size();++i ){
+            RowItem item = new RowItem(platePic.get(i), plateState.get(i), plateName.get(i));
+            rowItems.add(item);
+        }
 
-        listView.setAdapter(new SimpleAdapter(getActivity(), data, R.layout.list_single, new String[] {"thumbnail","name"}, new int[] {R.id.img, R.id.txt}));
+        //Create and set the adapter
+        CustomListViewAdapter adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
+        listView.setAdapter(adapter);
+
+
+
+
+//        String[] states = {"CA", "WA", "VA", "HI", "AZ"};
+//
+//        List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+//        for(int i=0; i<5; i++){
+//            Map<String,Object> datum = new HashMap<String, Object>(2);
+//            datum.put("thumbnail",String.valueOf(R.drawable.ic_launcher_plate));
+//            datum.put("name", states[i]);
+//            data.add(datum);
+//        }
+
+
+        //listView.setAdapter(new SimpleAdapter(getActivity(), data, R.layout.list_single, new String[] {"thumbnail","name"}, new int[] {R.id.img, R.id.txt}));
 
     }
 
