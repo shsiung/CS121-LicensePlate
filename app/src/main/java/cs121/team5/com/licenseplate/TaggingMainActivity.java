@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
 import java.io.File;
 
 public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
@@ -105,11 +107,25 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                     Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
                     if (mBitmap != null) {
                         license.setImageBitmap(rotatedBitmap);
+                        tesseract(rotatedBitmap);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public void tesseract(Bitmap plate){
+        TessBaseAPI baseApi = new TessBaseAPI();
+        baseApi.setDebug(true);
+        baseApi.init("/mnt/sdcard/tessertact_languages", "eng");
+        baseApi.setImage(plate);
+        String recognizedText = baseApi.getUTF8Text();
+        baseApi.end();
+
+        if (recognizedText.length() != 0) {
+            licenseNum.setText(recognizedText);
         }
     }
 
