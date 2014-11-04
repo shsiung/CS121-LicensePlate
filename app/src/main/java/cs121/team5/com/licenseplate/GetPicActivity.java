@@ -1,5 +1,8 @@
 package cs121.team5.com.licenseplate;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.hardware.Camera;
@@ -13,6 +16,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -98,23 +102,39 @@ public class GetPicActivity extends Fragment {
     private Camera.PictureCallback capturedIt = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera arg1) {
 
+            // Get the path to the directory
             File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "License_Plate");
             Log.d("ADebugTag",imagesFolder.getAbsolutePath());
+
+            // If the directory doesn't exit, create one
             if (!imagesFolder.exists()) {
                 imagesFolder.mkdirs();
             }
-            imagesFolder.mkdirs();
+
+            // The current license name
             String fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
             File output = new File(imagesFolder, fileName);
+
+            // Check if the photo name exist and photo being taken already
             while (output.exists() && !PictureTaken) {
                 CurrentLicenseNum++;
                 fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
                 output = new File(imagesFolder, fileName);
             }
             try {
+                // Extract the bitmap from data
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                // Only select the region we want
+                bitmap = ThumbnailUtils.extractThumbnail(bitmap, bitmap.getWidth()/9, bitmap.getHeight()/3);
+
+                // Convert it back to byte array data
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bmArray = stream.toByteArray(); // Get the underlying pixel bytes array
 
                 FileOutputStream imageFileOS = new FileOutputStream(output);
-                imageFileOS.write(data);
+                imageFileOS.write(bmArray);
                 imageFileOS.flush();
                 imageFileOS.close();
 
