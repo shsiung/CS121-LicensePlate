@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
 import java.io.File;
 
 public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
@@ -100,16 +102,30 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                     options = new BitmapFactory.Options();
                     options.inSampleSize = 1;  // Shrink the picture by a factor of 2
                     Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getAbsolutePath() + "/" + NameOfFile, options);
-                    Matrix matrix = new Matrix();
-                    matrix.postRotate(90);
-                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+//                    Matrix matrix = new Matrix();
+//                    matrix.postRotate(90);
+//                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
                     if (mBitmap != null) {
-                        license.setImageBitmap(rotatedBitmap);
+                        license.setImageBitmap(mBitmap);
+                        tesseract(mBitmap);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public void tesseract(Bitmap plate){
+        TessBaseAPI baseApi = new TessBaseAPI();
+        baseApi.setDebug(true);
+        baseApi.init("/mnt/sdcard/tessertact_languages", "eng");
+        baseApi.setImage(plate);
+        String recognizedText = baseApi.getUTF8Text();
+        baseApi.end();
+
+        if (recognizedText.length() != 0) {
+            licenseNum.setText(recognizedText);
         }
     }
 
