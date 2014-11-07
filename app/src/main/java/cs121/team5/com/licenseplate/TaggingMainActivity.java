@@ -51,7 +51,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         try {
             currentPhoto_.name_ = argument.getStringExtra("NameOfFile");
             currentPhoto_.directory_ = dirPath;
-            Log.d("NameOfFile:","Name of the file is:" + currentPhoto_.name_);
+            Log.d("NameOfFile:","File loaded:" + currentPhoto_.name_);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -71,8 +71,9 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         spinnerStates.setAdapter(adapter_state);
         spinnerStates.setOnItemSelectedListener(this);
 
-        loadLicensePic(currentPhoto_.name_);
-        loadGPSLocation();
+        loadLicense(currentPhoto_.name_);
+        if (gpsLocation.toString() == null)
+            loadGPSLocation();
 
     }
 
@@ -93,15 +94,17 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
     }
 
-    public void loadLicensePic(String NameOfFile) {
+    public void loadLicense(String NameOfFile) {
         File imagesFolder = new File(dirPath);
+        String imagePath = imagesFolder.getAbsolutePath() + "/" + NameOfFile;
         if(imagesFolder.exists()) {
-            if(new File(imagesFolder.getAbsolutePath() + "/" + NameOfFile).exists()) {
+            File plate = new File(imagePath);
+            if(plate.exists()) {
                 BitmapFactory.Options options;
                 try {
                     options = new BitmapFactory.Options();
                     options.inSampleSize = 1;  // Shrink the picture by a factor of 2
-                    Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getAbsolutePath() + "/" + NameOfFile, options);
+                    Bitmap mBitmap = BitmapFactory.decodeFile(imagePath, options);
 //                    Matrix matrix = new Matrix();
 //                    matrix.postRotate(90);
 //                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
@@ -110,6 +113,22 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                         tesseract(mBitmap);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // Update GUI
+                try{
+                    String[] separatedString = plate.getName().split("_");
+                    currentPhoto_.longtitude_ = Double.parseDouble(separatedString[4]);
+                    currentPhoto_.latitude_ = Double.parseDouble(separatedString[3]);
+                    currentPhoto_.special_ = Boolean.parseBoolean(separatedString[2]);
+                    currentPhoto_.state_ = separatedString[0];
+
+                    gpsLocation.setText(currentPhoto_.latitude_.toString()+
+                                        ","+currentPhoto_.longtitude_.toString());
+                    licenseNum.setText(currentPhoto_.name_);
+
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }
