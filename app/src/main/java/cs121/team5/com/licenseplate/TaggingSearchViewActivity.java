@@ -1,46 +1,27 @@
 package cs121.team5.com.licenseplate;
 
-import android.app.Activity;
-import android.app.ListFragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
     List<RowItem> rowItems;
-    ArrayList<String> plateName;
-    ArrayList<String> plateState;
-    ArrayList<LatLng> plateLatLng;
-    ArrayList<Bitmap> platePic;
-    ArrayList<Boolean> plateSpecial;
+    ArrayList<PlateStruct> plateInfoList;
 
     SearchView searchView;
     Object[] names;
@@ -51,12 +32,21 @@ public class TaggingSearchViewActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        plateLatLng = new ArrayList<LatLng>();
-        plateName = new ArrayList<String>();
-        plateState = new ArrayList<String>();
-        platePic = new ArrayList<Bitmap>();
-        plateSpecial = new ArrayList<Boolean>();
+        plateInfoList = new ArrayList<PlateStruct>();
     }
+
+
+       //Takes each picture and puts its information into the arraylist
+    public void updatePlateInfo(){
+        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+        File plateDir = new File(dirPath);
+        plateInfoList.clear();
+
+        for(File f : plateDir.listFiles()){
+            plateInfoList.add(new PlateStruct(f));
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,10 +61,7 @@ public class TaggingSearchViewActivity extends Fragment {
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
                 Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
-                String nameOfFile = plateState.get(position)+"_"+plateName.get(position)+"_"+
-                                    plateSpecial.get(position).toString()+"_"+
-                                    plateLatLng.get(position).latitude+"_"+
-                                    plateLatLng.get(position).longitude+"_"+".jpg";
+                String nameOfFile = plateInfoList.get(position).getPlateAddress();
                 tagPic.putExtra("NameOfFile", nameOfFile);
                 startActivity(tagPic);
             }
@@ -85,52 +72,29 @@ public class TaggingSearchViewActivity extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Display_Rows();
+        updatePlateInfo();
+        displayRows();
 
     }
 
 
 
-    private void Display_Rows() {
-
-        plateState.clear();
-        plateLatLng.clear();
-        plateName.clear();
-        platePic.clear();
-        plateSpecial.clear();
+    private void displayRows() {
 
         rowItems = new ArrayList<RowItem>();
         String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
-        File plateDir = new File(dirPath);
-        String[] separatedString;
 
-        //Pull info from files to local arraylists
-        for(File f : plateDir.listFiles()){
-
-            separatedString = f.getName().split("_");
-
-            plateState.add(separatedString[0]);
-            plateLatLng.add(new LatLng(Double.parseDouble(separatedString[3]),
-                                       Double.parseDouble(separatedString[4])));
-            plateName.add(separatedString[1]);
-            plateSpecial.add(Boolean.parseBoolean(separatedString[2]));
-
-            Bitmap plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
-            platePic.add(plateBitmap);
-        }
 
         //Create a row item for each plate file
         rowItems = new ArrayList<RowItem>();
-        for(int i=0; i< plateState.size();++i ){
-            RowItem item = new RowItem(platePic.get(i), "State: " + plateState.get(i), "Plate:"+plateName.get(i));
+        for(int i=0; i< plateInfoList.size();++i ){
+            RowItem item = new RowItem(plateInfoList.get(i));
             rowItems.add(item);
         }
 
         //Create and set the adapter
         CustomListViewAdapter adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
         listView.setAdapter(adapter);
-
     }
 
     public File[] Search(String keyword) {

@@ -10,6 +10,12 @@ public class RowItem {
     private String title;
     private String desc;
 
+    public RowItem(PlateStruct plate){
+        this.imageBitmap = plate.getPlateBitmap();
+        this.title = plate.getPlateState();
+        this.desc = plate.getPlateName();
+    }
+
     public RowItem(Bitmap imageBitmap, String title, String desc) {
         this.imageBitmap = imageBitmap;
         this.title = title;

@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * Created by perry_000 on 11/9/2014.
  */
-public class plateStruct {
+public class PlateStruct {
     private String plateName;
     private String plateState;
     private LatLng plateLatLng;
@@ -18,8 +18,8 @@ public class plateStruct {
     private Boolean plateSpecial;
 
 
-    public plateStruct(String plateName, String plateState, LatLng plateLatLng,
-                        Bitmap plateBitmap, Boolean plateSpecial){
+    public PlateStruct(String plateName, String plateState, LatLng plateLatLng,
+                       Bitmap plateBitmap, Boolean plateSpecial){
         this.plateName = plateName;
         this.plateState = plateState;
         this.plateLatLng = plateLatLng;
@@ -27,7 +27,7 @@ public class plateStruct {
         this.plateSpecial = plateSpecial;
     }
 
-    public plateStruct(File f){
+    public PlateStruct(File f){
         String[] separatedString = f.getName().split("_");
 
         this.plateState = separatedString[0];
@@ -77,5 +77,14 @@ public class plateStruct {
 
     public Boolean getPlateSpecial() {
         return plateSpecial;
+    }
+
+    public String getPlateAddress(){
+       String nameOfFile = this.getPlateState() + "_"+
+                           this.getPlateName() + "_" +
+                           this.getPlateSpecial().toString()+"_"+
+                           this.getPlateLatLng().latitude+"_"+
+                           this.getPlateLatLng().longitude+"_"+".jpg";
+        return nameOfFile;
     }
 }
