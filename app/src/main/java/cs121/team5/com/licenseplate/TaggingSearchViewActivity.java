@@ -40,6 +40,7 @@ public class TaggingSearchViewActivity extends Fragment {
     ArrayList<String> plateState;
     ArrayList<LatLng> plateLatLng;
     ArrayList<Bitmap> platePic;
+    ArrayList<Boolean> plateSpecial;
 
     SearchView searchView;
     Object[] names;
@@ -54,6 +55,7 @@ public class TaggingSearchViewActivity extends Fragment {
         plateName = new ArrayList<String>();
         plateState = new ArrayList<String>();
         platePic = new ArrayList<Bitmap>();
+        plateSpecial = new ArrayList<Boolean>();
     }
 
     @Override
@@ -68,10 +70,12 @@ public class TaggingSearchViewActivity extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
-
-                // TODO: Fill in the actual photo name clicked
                 Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
-                tagPic.putExtra("NameOfFile", "license_" + String.valueOf(0) + ".jpg");
+                String nameOfFile = plateState.get(position)+"_"+plateName.get(position)+"_"+
+                                    plateSpecial.get(position).toString()+"_"+
+                                    plateLatLng.get(position).latitude+"_"+
+                                    plateLatLng.get(position).longitude+"_"+".jpg";
+                tagPic.putExtra("NameOfFile", nameOfFile);
                 startActivity(tagPic);
             }
         });
@@ -94,6 +98,7 @@ public class TaggingSearchViewActivity extends Fragment {
         plateLatLng.clear();
         plateName.clear();
         platePic.clear();
+        plateSpecial.clear();
 
         rowItems = new ArrayList<RowItem>();
         String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
@@ -105,10 +110,11 @@ public class TaggingSearchViewActivity extends Fragment {
 
             separatedString = f.getName().split("_");
 
-            plateState.add("State: " + separatedString[0]);
+            plateState.add(separatedString[0]);
             plateLatLng.add(new LatLng(Double.parseDouble(separatedString[3]),
                                        Double.parseDouble(separatedString[4])));
-            plateName.add("Plate: " + separatedString[1]);
+            plateName.add(separatedString[1]);
+            plateSpecial.add(Boolean.parseBoolean(separatedString[2]));
 
             Bitmap plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
             platePic.add(plateBitmap);
@@ -117,7 +123,7 @@ public class TaggingSearchViewActivity extends Fragment {
         //Create a row item for each plate file
         rowItems = new ArrayList<RowItem>();
         for(int i=0; i< plateState.size();++i ){
-            RowItem item = new RowItem(platePic.get(i), plateState.get(i), plateName.get(i));
+            RowItem item = new RowItem(platePic.get(i), "State: " + plateState.get(i), "Plate:"+plateName.get(i));
             rowItems.add(item);
         }
 
