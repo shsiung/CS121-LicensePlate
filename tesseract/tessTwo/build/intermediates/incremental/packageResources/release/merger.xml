@@ -2,12 +2,12 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/Users/jerry8050/Desktop/Junior/CS121-Software Development/CS121-LicensePlate/tesseract/tessTwo/res" />
-        <source path="/Users/jerry8050/Desktop/Junior/CS121-Software Development/CS121-LicensePlate/tesseract/tessTwo/build/generated/res/rs/release" />
-        <source path="/Users/jerry8050/Desktop/Junior/CS121-Software Development/CS121-LicensePlate/tesseract/tessTwo/build/generated/res/generated/release" />
+        <source path="F:\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\res" />
+        <source path="F:\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\build\generated\res\rs\release" />
+        <source path="F:\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\build\generated\res\generated\release" />
     </dataSet>
     <dataSet config="release" >
-        <source path="/Users/jerry8050/Desktop/Junior/CS121-Software Development/CS121-LicensePlate/tesseract/tessTwo/src/release/res" />
+        <source path="F:\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\src\release\res" />
     </dataSet>
 
 </merger>
