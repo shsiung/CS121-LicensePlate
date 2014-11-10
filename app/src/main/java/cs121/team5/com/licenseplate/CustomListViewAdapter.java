@@ -90,7 +90,6 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<String> filteredResults = getFilteredResults(constraint);
             }
 
             @Override
@@ -100,3 +99,4 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
         };
     }
 }
+//http://www.survivingwithandroid.com/2012/10/android-listview-custom-filter-and.html
