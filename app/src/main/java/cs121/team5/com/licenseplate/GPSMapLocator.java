@@ -109,10 +109,10 @@ public class GPSMapLocator extends Fragment{
                     options = new BitmapFactory.Options();
                     options.inSampleSize = 6;  // Shrink the picture by a factor of 2
                     Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getAbsolutePath() + "/" + NameOfFile, options);
-                    Matrix matrix = new Matrix();
-                    matrix.postRotate(90);
-                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
-                    return rotatedBitmap;
+//                    Matrix matrix = new Matrix();
+//                    matrix.postRotate(90);
+//                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
+                    return mBitmap;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -40,6 +40,7 @@
 
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
@@ -49,10 +50,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".TaggingMainActivity"
             android:label="@string/title_activity_tagging" >
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".TaggingSearchViewActivity"
             android:label="@string/title_activity_get_pic" >
         </activity>
