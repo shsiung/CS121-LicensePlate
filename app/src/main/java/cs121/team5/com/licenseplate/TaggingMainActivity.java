@@ -42,6 +42,8 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean newPlate = false;
+        boolean defaultBool = false;
 
         currentPhoto_ = new PhotoAttributes();
         gps = new GPSTracker(this);
@@ -50,8 +52,9 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         Intent argument = getIntent();
         try {
             currentPhoto_.name_ = argument.getStringExtra("NameOfFile");
+            newPlate = argument.getBooleanExtra("NewPlate", defaultBool);
             currentPhoto_.directory_ = dirPath;
-            Log.d("NameOfFile:","File loaded:" + currentPhoto_.name_);
+            Log.d("NameOfFile:","File loaded:" + currentPhoto_.name_.split("_")[1]);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -71,9 +74,13 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         spinnerStates.setAdapter(adapter_state);
         spinnerStates.setOnItemSelectedListener(this);
 
-        loadLicense(currentPhoto_.name_);
-        if (gpsLocation.toString() == null)
+        loadLicense(currentPhoto_.name_, newPlate);
+
+        // Only get the local GPS info if it is new plate.
+        if (newPlate) {
             loadGPSLocation();
+        }
+
 
     }
 
@@ -94,7 +101,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
     }
 
-    public void loadLicense(String NameOfFile) {
+    public void loadLicense(String NameOfFile, Boolean NewPlate) {
         File imagesFolder = new File(dirPath);
         String imagePath = imagesFolder.getAbsolutePath() + "/" + NameOfFile;
         if(imagesFolder.exists()) {
@@ -105,31 +112,32 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                     options = new BitmapFactory.Options();
                     options.inSampleSize = 1;  // Shrink the picture by a factor of 2
                     Bitmap mBitmap = BitmapFactory.decodeFile(imagePath, options);
-//                    Matrix matrix = new Matrix();
-//                    matrix.postRotate(90);
-//                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
                     if (mBitmap != null) {
                         license.setImageBitmap(mBitmap);
+                    }
+                    if (NewPlate){
                         tesseract(mBitmap);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                // Update GUI
-                try{
-                    String[] separatedString = plate.getName().split("_");
-                    currentPhoto_.longtitude_ = Double.parseDouble(separatedString[4]);
-                    currentPhoto_.latitude_ = Double.parseDouble(separatedString[3]);
-                    currentPhoto_.special_ = Boolean.parseBoolean(separatedString[2]);
-                    currentPhoto_.state_ = separatedString[0];
+                // Update GUI only if it's not new plot
+                if(!NewPlate) {
+                    try {
+                        String[] separatedString = plate.getName().split("_");
+                        currentPhoto_.longtitude_ = Double.parseDouble(separatedString[4]);
+                        currentPhoto_.latitude_ = Double.parseDouble(separatedString[3]);
+                        currentPhoto_.special_ = Boolean.parseBoolean(separatedString[2]);
+                        currentPhoto_.state_ = separatedString[0];
 
-                    gpsLocation.setText(currentPhoto_.latitude_.toString()+
-                                        ","+currentPhoto_.longtitude_.toString());
-                    licenseNum.setText(currentPhoto_.name_);
+                        gpsLocation.setText(currentPhoto_.latitude_.toString() +
+                                "," + currentPhoto_.longtitude_.toString());
+                        licenseNum.setText(separatedString[1]);
 
-                } catch (Exception e){
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
