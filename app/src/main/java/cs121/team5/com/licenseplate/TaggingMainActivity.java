@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -146,12 +147,17 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
     private void renamePhoto(String oldName, String newName) {
         File from = new File(oldName);
+        Log.d("Debug", oldName);
+        if (from.exists()){
+            Log.d("Debug", "HIIIII");
+        }
         File to = new File(newName);
+
         from.renameTo(to);
     }
 
     private void updatePhotoAttribute() {
-        String oldName = currentPlate.getPlateName();
+        String oldName = currentPlate.getPlateAddress();
         currentPlate.setPlateSpecial(specialPlate.isChecked());
         currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
         currentPlate.setPlateName(licenseNum.getText().toString());

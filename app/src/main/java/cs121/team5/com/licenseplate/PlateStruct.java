@@ -92,7 +92,8 @@ public class PlateStruct {
     }
 
     public String getPlateAddress(){
-        String nameOfFile = this.getPlateState() + "_"+
+        String nameOfFile =
+                this.getPlateState() + "_"+
                 this.getPlateName() + "_" +
                 this.getPlateSpecial().toString()+"_"+
                 this.getPlateLatLng().latitude+"_"+
