@@ -9,11 +9,13 @@ public class RowItem {
     private Bitmap imageBitmap;
     private String title;
     private String desc;
+    private String address;
 
     public RowItem(PlateStruct plate){
         this.imageBitmap = plate.getPlateBitmap();
         this.title = plate.getPlateState();
         this.desc = plate.getPlateName();
+        this.address = plate.getPlateAddress();
     }
 
     public RowItem(Bitmap imageBitmap, String title, String desc) {
@@ -37,6 +39,7 @@ public class RowItem {
     public String getTitle() {
         return title;
     }
+    public String getAddress(){return address;}
     public void setTitle(String title) {
         this.title = title;
     }

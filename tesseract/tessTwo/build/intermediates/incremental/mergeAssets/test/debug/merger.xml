@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="debug" >
-        <source path="C:\Users\perry_000\.AndroidStudioBeta\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\build\intermediates\bundles\debug\assets" />
+        <source path="F:\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\build\intermediates\bundles\debug\assets" />
     </dataSet>
     <dataSet config="main" >
-        <source path="C:\Users\perry_000\.AndroidStudioBeta\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\src\androidTest\assets" />
+        <source path="F:\AndroidStudioProjects\CS121-LicensePlate\tesseract\tessTwo\src\androidTest\assets" />
     </dataSet>
 
 </merger>
