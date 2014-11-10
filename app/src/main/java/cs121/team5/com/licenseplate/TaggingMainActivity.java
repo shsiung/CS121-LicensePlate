@@ -46,6 +46,19 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         currentPlate = new PlateStruct();
         gps = new GPSTracker(this);
 
+        setContentView(R.layout.activity_tagging);
+        license = (ImageView) findViewById(R.id.licenseView);
+        gpsLocation = (TextView) findViewById(R.id.gpsTextView);
+        spinnerStates = (Spinner) findViewById(R.id.osversions);
+        licenseNum = (EditText) findViewById(R.id.plateNumber);
+        specialPlate = (CheckBox) findViewById(R.id.specialCB);
+        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, state);
+        adapter_state
+                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStates.setAdapter(adapter_state);
+        spinnerStates.setOnItemSelectedListener(this);
+
         // Get the argument from the intent called by parent activity
         Intent argument = getIntent();
         try {
@@ -55,20 +68,6 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         catch (Exception e) {
             e.printStackTrace();
         }
-
-        setContentView(R.layout.activity_tagging);
-        license = (ImageView) findViewById(R.id.licenseView);
-        gpsLocation = (TextView) findViewById(R.id.gpsTextView);
-        spinnerStates = (Spinner) findViewById(R.id.osversions);
-        licenseNum = (EditText) findViewById(R.id.plateNumber);
-        specialPlate = (CheckBox) findViewById(R.id.specialCB);
-
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, state);
-        adapter_state
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerStates.setAdapter(adapter_state);
-        spinnerStates.setOnItemSelectedListener(this);
 
         loadLicense(currentPlate.getPlateName(), newPlate);
     }
@@ -157,7 +156,6 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
         currentPlate.setPlateName(licenseNum.getText().toString());
         String newName = currentPlate.getPlateAddress();
-
         renamePhoto(dirPath+"/"+oldName,dirPath+"/"+newName);
     }
 
