@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -20,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
@@ -27,7 +25,7 @@ import java.io.File;
 public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
     private Spinner spinnerStates;
     private TextView gpsLocation;
-    private PhotoAttributes currentPhoto_;
+    private PlateStruct currentPlate;
     private ImageView license;
     private EditText licenseNum;
     private CheckBox specialPlate;
@@ -45,16 +43,14 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         boolean newPlate = false;
         boolean defaultBool = false;
 
-        currentPhoto_ = new PhotoAttributes();
+        currentPlate = new PlateStruct();
         gps = new GPSTracker(this);
 
         // Get the argument from the intent called by parent activity
         Intent argument = getIntent();
         try {
-            currentPhoto_.name_ = argument.getStringExtra("NameOfFile");
+            currentPlate.setPlateName(argument.getStringExtra("NameOfFile"));
             newPlate = argument.getBooleanExtra("NewPlate", defaultBool);
-            currentPhoto_.directory_ = dirPath;
-            Log.d("NameOfFile:","File loaded:" + currentPhoto_.name_.split("_")[1]);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -74,26 +70,18 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         spinnerStates.setAdapter(adapter_state);
         spinnerStates.setOnItemSelectedListener(this);
 
-        loadLicense(currentPhoto_.name_, newPlate);
-
-        // Only get the local GPS info if it is new plate.
-        if (newPlate) {
-            loadGPSLocation();
-        }
-
-
+        loadLicense(currentPlate.getPlateName(), newPlate);
     }
 
     public void loadGPSLocation(){
         gps.showSettingsAlert();
-        double lat = 0;
-        double longt = 0;
+        double lat;
+        double lng;
         if(gps.canGetLocation()) {
             lat = gps.getLatitude();    // returns latitude
-            longt = gps.getLongitude(); // returns longitude
-            gpsLocation.setText(String.valueOf(lat) + ", " + String.valueOf(longt));
-            currentPhoto_.latitude_ = lat;
-            currentPhoto_.longtitude_ = longt;
+            lng = gps.getLongitude(); // returns longitude
+            gpsLocation.setText(String.valueOf(lat) + ", " + String.valueOf(lng));
+            currentPlate.setPlateLatLng(new LatLng(lat,lng));
         }
         else{
             gpsLocation.setText("INVALID");
@@ -117,6 +105,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                     }
                     if (NewPlate){
                         tesseract(mBitmap);
+                        loadGPSLocation();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -125,16 +114,11 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                 // Update GUI only if it's not new plot
                 if(!NewPlate) {
                     try {
-                        String[] separatedString = plate.getName().split("_");
-                        currentPhoto_.longtitude_ = Double.parseDouble(separatedString[4]);
-                        currentPhoto_.latitude_ = Double.parseDouble(separatedString[3]);
-                        currentPhoto_.special_ = Boolean.parseBoolean(separatedString[2]);
-                        currentPhoto_.state_ = separatedString[0];
-
-                        gpsLocation.setText(currentPhoto_.latitude_.toString() +
-                                "," + currentPhoto_.longtitude_.toString());
-                        licenseNum.setText(separatedString[1]);
-
+                        currentPlate.setPlateStruct(plate.getName());
+                        gpsLocation.setText(currentPlate.getPlateLatLng().latitude + "," +
+                                            currentPlate.getPlateLatLng().longitude );
+                        licenseNum.setText(currentPlate.getPlateName());
+                        specialPlate.setChecked(currentPlate.getPlateSpecial());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -146,7 +130,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     public void tesseract(Bitmap plate){
         TessBaseAPI baseApi = new TessBaseAPI();
         baseApi.setDebug(true);
-        baseApi.init("/mnt/sdcard/tessertact_languages", "eng");
+        baseApi.init(Environment.getExternalStorageDirectory().getPath()+"/tessertact_languages", "eng");
         baseApi.setImage(plate);
         String recognizedText = baseApi.getUTF8Text();
         baseApi.end();
@@ -168,11 +152,11 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     }
 
     private void updatePhotoAttribute() {
-        String oldName = currentPhoto_.name_;
-        currentPhoto_.number_ = licenseNum.getText().toString();
-        currentPhoto_.state_ = (String) spinnerStates.getSelectedItem();
-        currentPhoto_.special_ = specialPlate.isChecked();
-        String newName = currentPhoto_.composeName();
+        String oldName = currentPlate.getPlateName();
+        currentPlate.setPlateSpecial(specialPlate.isChecked());
+        currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
+        currentPlate.setPlateName(licenseNum.getText().toString());
+        String newName = currentPlate.getPlateAddress();
 
         renamePhoto(dirPath+"/"+oldName,dirPath+"/"+newName);
     }
