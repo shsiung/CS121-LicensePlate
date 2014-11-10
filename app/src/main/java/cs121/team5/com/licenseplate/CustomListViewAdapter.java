@@ -6,6 +6,7 @@ package cs121.team5.com.licenseplate;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
+public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filterable {
 
     Context context;
 
@@ -81,4 +84,19 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
         return convertView;
     }
 
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<String> filteredResults = getFilteredResults(constraint);
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            }
+        };
+    }
 }

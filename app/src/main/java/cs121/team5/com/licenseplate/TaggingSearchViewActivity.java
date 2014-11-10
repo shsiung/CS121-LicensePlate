@@ -4,11 +4,14 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -16,12 +19,14 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
     List<RowItem> rowItems;
     ArrayList<PlateStruct> plateInfoList;
+    EditText editSearch;
 
     SearchView searchView;
     Object[] names;
@@ -33,6 +38,8 @@ public class TaggingSearchViewActivity extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         plateInfoList = new ArrayList<PlateStruct>();
+
+
     }
 
 
@@ -56,6 +63,26 @@ public class TaggingSearchViewActivity extends Fragment {
         listView = (ListView) v
                 .findViewById(R.id.list);
 
+        editSearch = (EditText) v.findViewById(R.id.queryContent);
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = editSearch.getText().toString().toLowerCase(Locale.getDefault());
+                adapter.getFilter().filter(text);
+            }
+        });
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
@@ -74,6 +101,7 @@ public class TaggingSearchViewActivity extends Fragment {
         super.onActivityCreated(savedInstanceState);
         updatePlateInfo();
         displayRows();
+
 
     }
 
@@ -95,26 +123,10 @@ public class TaggingSearchViewActivity extends Fragment {
         //Create and set the adapter
         CustomListViewAdapter adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
         listView.setAdapter(adapter);
+
     }
 
-    public File[] Search(String keyword) {
-        String myDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File f = new File(myDirectory);
-        if (f.exists() && f.isDirectory()) {
-            // the regex has to be written
-            final Pattern p = Pattern.compile("*" + keyword + "*");
 
-            File[] flists = f.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    return p.matcher(file.getName()).matches();
-                }
-            });
-            return flists;
-        } else {
-            return null;
-        }
-    }
 }
 
 
