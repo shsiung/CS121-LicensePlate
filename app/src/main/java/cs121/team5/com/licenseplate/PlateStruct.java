@@ -16,6 +16,7 @@ public class PlateStruct {
     private LatLng plateLatLng;
     private Bitmap plateBitmap;
     private Boolean plateSpecial;
+    private String plateAddress;
 
     public PlateStruct(){
         // Do Nothing
@@ -28,6 +29,7 @@ public class PlateStruct {
         this.plateLatLng = plateLatLng;
         this.plateBitmap = plateBitmap;
         this.plateSpecial = plateSpecial;
+        this.plateAddress = createPlateAddress();
     }
 
     public PlateStruct(File f){
@@ -39,6 +41,7 @@ public class PlateStruct {
                 Double.parseDouble(separatedString[4]));
         this.plateSpecial = Boolean.parseBoolean(separatedString[2]);
         this.plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+        this.plateAddress = createPlateAddress();
     }
 
 
@@ -91,7 +94,7 @@ public class PlateStruct {
         this.plateSpecial = Boolean.parseBoolean(separatedString[2]);
     }
 
-    public String getPlateAddress(){
+    public String createPlateAddress(){
         String nameOfFile =
                 this.getPlateState() + "_"+
                 this.getPlateName() + "_" +
@@ -99,5 +102,11 @@ public class PlateStruct {
                 this.getPlateLatLng().latitude+"_"+
                 this.getPlateLatLng().longitude+"_"+".jpg";
         return nameOfFile;
+    }
+
+    public String getPlateAddress(){ return plateAddress;}
+
+    public void setPlateAddress(String address){
+        this.plateAddress = address;
     }
 }

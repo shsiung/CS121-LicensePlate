@@ -5,6 +5,7 @@ package cs121.team5.com.licenseplate;
  */
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,12 +26,14 @@ import android.widget.Toast;
 
 public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filterable {
 
+    private List<RowItem> rowItems;
     Context context;
 
     public CustomListViewAdapter(Context context, int resourceId,
                                  List<RowItem> items) {
         super(context, resourceId, items);
         this.context = context;
+        this.rowItems = items;
     }
 
     /*private view holder class*/
@@ -90,11 +93,37 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-            }
+                Log.d("Filter","performing filtering");
+                FilterResults results = new FilterResults();
+
+                if(constraint==null || constraint.length()==0){
+                    results.values = rowItems;
+                    results.count = rowItems.size();
+                }
+                else{
+                    List<RowItem> nRowItems = new ArrayList<RowItem>();
+
+                    for(RowItem r : rowItems){
+                        if(r.getTitle().toUpperCase().startsWith(constraint.toString().toUpperCase()) ||
+                                r.getDesc().toUpperCase().startsWith(constraint.toString().toUpperCase())){
+                            nRowItems.add(r);
+                        }
+                        results.values = nRowItems;
+                        results.count = nRowItems.size();
+                    }
+                }
+                return results;
+            };
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-
+                if(results.count == 0){
+                    notifyDataSetInvalidated();
+                }
+                else {
+                    rowItems = (List<RowItem>) results.values;
+                    notifyDataSetChanged();
+                }
             }
         };
     }

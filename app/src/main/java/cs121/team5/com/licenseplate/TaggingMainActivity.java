@@ -104,14 +104,15 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                         license.setImageBitmap(mBitmap);
                     }
                     if (NewPlate){
-                        tesseract(mBitmap);
+                        //tesseract(mBitmap);
+                        currentPlate.setPlateAddress(NameOfFile);
                         loadGPSLocation();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                // Update GUI only if it's not new plot
+                // Update GUI only if it's not new plate
                 if(!NewPlate) {
                     try {
                         currentPlate.setPlateStruct(plate.getName());
@@ -161,7 +162,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         currentPlate.setPlateSpecial(specialPlate.isChecked());
         currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
         currentPlate.setPlateName(licenseNum.getText().toString());
-        String newName = currentPlate.getPlateAddress();
+        String newName = currentPlate.createPlateAddress();
         renamePhoto(dirPath+"/"+oldName,dirPath+"/"+newName);
     }
 

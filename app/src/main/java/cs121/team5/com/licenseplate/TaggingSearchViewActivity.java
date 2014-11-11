@@ -16,11 +16,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
@@ -30,7 +27,7 @@ public class TaggingSearchViewActivity extends Fragment {
 
     SearchView searchView;
     Object[] names;
-    ArrayAdapter<String> adapter;
+    CustomListViewAdapter adapter;
     ArrayList<String> mAllList = new ArrayList<String>();
 
 
@@ -63,8 +60,8 @@ public class TaggingSearchViewActivity extends Fragment {
         listView = (ListView) v
                 .findViewById(R.id.list);
 
-        editSearch = (EditText) v.findViewById(R.id.queryContent);
-        editSearch.addTextChangedListener(new TextWatcher() {
+        final EditText searchBar = (EditText) v.findViewById(R.id.queryContent);
+        searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -77,11 +74,10 @@ public class TaggingSearchViewActivity extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String text = editSearch.getText().toString().toLowerCase(Locale.getDefault());
+                String text = searchBar.getText().toString();
                 adapter.getFilter().filter(text);
             }
         });
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,7 +106,7 @@ public class TaggingSearchViewActivity extends Fragment {
     private void displayRows() {
 
         rowItems = new ArrayList<RowItem>();
-        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+
 
 
         //Create a row item for each plate file
@@ -121,8 +117,9 @@ public class TaggingSearchViewActivity extends Fragment {
         }
 
         //Create and set the adapter
-        CustomListViewAdapter adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
+        adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
         listView.setAdapter(adapter);
+
 
     }
 
