@@ -44,9 +44,9 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
         Button delete;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        final RowItem rowItem = getItem(position);
+        RowItem rowItem = rowItems.get(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -71,12 +71,14 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
             public void onClick(View v) {
                 String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                                  + "/License_Plate/";
-                File file = new File(dirPath + rowItem.getAddress());
-                Log.d("file", rowItem.getAddress());
+                RowItem deleteItem = rowItems.get(position);
+                File file = new File(dirPath + deleteItem.getAddress());
+                Log.d("file", deleteItem.getAddress());
                 boolean deleted = file.delete();
                 if (deleted) {
-                    remove(rowItem);
+                    rowItems.remove(deleteItem);
                     Toast.makeText(context, "Deleted plate", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
                 } else {
                     Toast.makeText(context, "Could not delete plate", Toast.LENGTH_SHORT).show();
                 }
@@ -94,6 +96,7 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 Log.d("Filter","performing filtering");
+                Log.d("Filter constraint", constraint.toString());
                 FilterResults results = new FilterResults();
 
                 if(constraint==null || constraint.length()==0){
@@ -104,6 +107,8 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
                     List<RowItem> nRowItems = new ArrayList<RowItem>();
 
                     for(RowItem r : rowItems){
+                        Log.d("Title string",r.getTitle().toUpperCase());
+                        Log.d("Desc string",r.getDesc().toUpperCase());
                         if(r.getTitle().toUpperCase().startsWith(constraint.toString().toUpperCase()) ||
                                 r.getDesc().toUpperCase().startsWith(constraint.toString().toUpperCase())){
                             nRowItems.add(r);
@@ -117,11 +122,16 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
+                Log.d("Test", "publishing");
                 if(results.count == 0){
                     notifyDataSetInvalidated();
                 }
                 else {
-                    rowItems = (List<RowItem>) results.values;
+                    Log.d("results",results.values.toString());
+                    rowItems =(ArrayList<RowItem>) results.values;
+
+
+                    Log.d("Test", "Attempting to change");
                     notifyDataSetChanged();
                 }
             }
