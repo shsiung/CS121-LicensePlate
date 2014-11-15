@@ -30,6 +30,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     private ImageView license;
     private EditText licenseNum;
     private CheckBox specialPlate;
+    private boolean newPlate = false;
 
     private String[] state = { "CA", "VA", "NJ", "TN",
             "TA", "WS"};
@@ -41,7 +42,6 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean newPlate = false;
         boolean defaultBool = false;
 
         currentPlate = new PlateStruct();
@@ -70,7 +70,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
             e.printStackTrace();
         }
 
-        loadLicense(currentPlate.getPlateName(), newPlate);
+        loadLicense(currentPlate.getPlateName());
     }
 
     public void loadGPSLocation(){
@@ -89,7 +89,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
     }
 
-    public void loadLicense(String NameOfFile, Boolean NewPlate) {
+    public void loadLicense(String NameOfFile) {
         File imagesFolder = new File(dirPath);
         String imagePath = imagesFolder.getAbsolutePath() + "/" + NameOfFile;
         if(imagesFolder.exists()) {
@@ -103,7 +103,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                     if (mBitmap != null) {
                         license.setImageBitmap(mBitmap);
                     }
-                    if (NewPlate){
+                    if (newPlate){
                         tesseract(mBitmap);
                         loadGPSLocation();
                     }
@@ -112,7 +112,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                 }
 
                 // Update GUI only if it's not new plot
-                if(!NewPlate) {
+                if(!newPlate) {
                     try {
                         currentPlate.setPlateStruct(plate.getName());
                         gpsLocation.setText(currentPlate.getPlateLatLng().latitude + "," +
@@ -157,7 +157,12 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
     }
 
     private void updatePhotoAttribute() {
-        String oldName = currentPlate.getPlateAddress();
+        String oldName;
+        if (newPlate)
+            oldName = currentPlate.getPlateName();
+        else
+            oldName = currentPlate.getPlateAddress();
+
         currentPlate.setPlateSpecial(specialPlate.isChecked());
         currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
         currentPlate.setPlateName(licenseNum.getText().toString());
