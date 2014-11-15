@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,8 +24,8 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
 
-public class TaggingMainActivity extends Activity implements OnItemSelectedListener {
-    private Spinner spinnerStates;
+public class TaggingMainActivity extends Activity {
+    private AutoCompleteTextView spinnerStates;
     private TextView gpsLocation;
     private PlateStruct currentPlate;
     private ImageView license;
@@ -50,15 +51,26 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         setContentView(R.layout.activity_tagging);
         license = (ImageView) findViewById(R.id.licenseView);
         gpsLocation = (TextView) findViewById(R.id.gpsTextView);
-        spinnerStates = (Spinner) findViewById(R.id.osversions);
+        spinnerStates = (AutoCompleteTextView) findViewById(R.id.osversions);
+        spinnerStates.setThreshold(1);
         licenseNum = (EditText) findViewById(R.id.plateNumber);
         specialPlate = (CheckBox) findViewById(R.id.specialCB);
+        specialPlate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(specialPlate.isChecked()){
+                    specialPlate.setText("Yes");
+                }else{
+                    specialPlate.setText("No");
+                }
+            }
+        });
+
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, state);
+                R.layout.state_dropdown, state);
         adapter_state
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStates.setAdapter(adapter_state);
-        spinnerStates.setOnItemSelectedListener(this);
 
         // Get the argument from the intent called by parent activity
         Intent argument = getIntent();
@@ -115,18 +127,32 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
                 if(!newPlate) {
                     try {
                         currentPlate.setPlateStruct(plate.getName());
-                        gpsLocation.setText(currentPlate.getPlateLatLng().latitude + "," +
-                                            currentPlate.getPlateLatLng().longitude );
-                        licenseNum.setText(currentPlate.getPlateName());
-                        specialPlate.setChecked(currentPlate.getPlateSpecial());
+                        updateGui();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+                else
+                    specialPlate.setText("No");
             }
         }
     }
 
+    /** Update GUI */
+    public void updateGui()
+    {
+        gpsLocation.setText(currentPlate.getPlateLatLng().latitude + "," +
+        currentPlate.getPlateLatLng().longitude );
+        licenseNum.setText(currentPlate.getPlateName());
+        spinnerStates.setText(currentPlate.getPlateState());
+        specialPlate.setChecked(currentPlate.getPlateSpecial());
+        if (specialPlate.isChecked())
+            specialPlate.setText("Yes");
+        else
+            specialPlate.setText("No");
+    }
+
+    /** Text recognition library */
     public void tesseract(Bitmap plate){
         TessBaseAPI baseApi = new TessBaseAPI();
         baseApi.setDebug(true);
@@ -147,15 +173,11 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
 
     private void renamePhoto(String oldName, String newName) {
         File from = new File(oldName);
-        Log.d("Debug", oldName);
-        if (from.exists()){
-            Log.d("Debug", "HIIIII");
-        }
         File to = new File(newName);
-
         from.renameTo(to);
     }
 
+    /** Update Photo attributes before saving */
     private void updatePhotoAttribute() {
         String oldName;
         if (newPlate)
@@ -164,26 +186,10 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
             oldName = currentPlate.getPlateAddress();
 
         currentPlate.setPlateSpecial(specialPlate.isChecked());
-        currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
+        currentPlate.setPlateState(spinnerStates.getText().toString());
         currentPlate.setPlateName(licenseNum.getText().toString());
         String newName = currentPlate.getPlateAddress();
         renamePhoto(dirPath+"/"+oldName,dirPath+"/"+newName);
-    }
-
-    public void onItemSelected(AdapterView<?> parent, View view, int position,
-                               long id) {
-        spinnerStates.setSelection(position);
-
-        if(gps.canGetLocation()) {
-            gps.getLatitude(); // returns latitude
-            gps.getLongitude(); // returns longitude
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     /** Called when the user clicks the Save button */
@@ -196,7 +202,7 @@ public class TaggingMainActivity extends Activity implements OnItemSelectedListe
         finish();
     }
 
-    /** Called when the user clicks the Save button */
+    /** Called when the user clicks the Cancel button */
     public void Cancel(View view) {
         gps.stopUsingGPS();
         finish();

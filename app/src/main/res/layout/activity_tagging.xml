@@ -17,19 +17,26 @@
         android:id="@+id/stateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_below="@id/licenseView" >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:text="States:"
+            android:text="State:"
+            style="@style/textview_text"
             />
-        <Spinner
+        <AutoCompleteTextView
             android:id="@+id/osversions"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
             android:layout_weight="1"
+            android:hint="CA/California"
+            android:background="@drawable/tagging_gen"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:padding="8dp"
             />
     </LinearLayout>
 
@@ -37,24 +44,29 @@
         android:id="@+id/numberLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_below="@id/stateLayout" >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="Plate Number:"
+            style="@style/textview_text"
             />
         <EditText
             android:id="@+id/plateNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_weight="0.1"
             android:singleLine="true"
             android:inputType="text"
             android:imeOptions="actionDone"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:hint="Ex. 8GPS292"
+            android:hint="8GPS292"
+            android:background="@drawable/tagging_gen"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:padding="8dp"
             />
     </LinearLayout>
 
@@ -62,20 +74,24 @@
         android:id="@+id/specialLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_below="@id/numberLayout" >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="Special Plate:"
+            style="@style/textview_text"
             />
         <CheckBox
             android:id="@+id/specialCB"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/tagging_gen"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             />
     </LinearLayout>
 
@@ -83,20 +99,29 @@
         android:id="@+id/gpsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_below="@id/specialLayout" >
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="Current GPS Location:"
+            style="@style/textview_text"
             />
         <TextView
             android:id="@+id/gpsTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
             android:layout_weight="0.2"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textSize = "16sp"
+            android:shadowColor = "#000000"
+            android:shadowDx = "0.5"
+            android:shadowDy = "0.5"
+            android:background="@drawable/tagging_gen"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:padding="8dp"
             />
     </LinearLayout>
 
