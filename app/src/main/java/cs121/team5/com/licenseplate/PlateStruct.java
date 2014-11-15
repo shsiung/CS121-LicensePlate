@@ -100,4 +100,14 @@ public class PlateStruct {
                 this.getPlateLatLng().longitude+"_"+".jpg";
         return nameOfFile;
     }
+
+    public String getPlateInfo(){
+        String nameOfFile =
+                this.getPlateState() + "\r\n"+
+                this.getPlateName() + "\r\n" +
+                this.getPlateSpecial().toString()+"\r\n"+
+                this.getPlateLatLng().latitude+"\r\n"+
+                this.getPlateLatLng().longitude;
+        return nameOfFile;
+    }
 }

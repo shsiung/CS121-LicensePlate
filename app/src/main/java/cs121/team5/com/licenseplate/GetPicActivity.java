@@ -31,6 +31,7 @@ public class GetPicActivity extends Fragment {
     private boolean PictureTaken;
     private int CurrentLicenseNum;
     private FrameLayout camPreview;
+    private byte[] image;
 
     public static Camera isCameraAvailable(){
         Camera object = null;
@@ -91,6 +92,7 @@ public class GetPicActivity extends Fragment {
             Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
             tagPic.putExtra("NameOfFile", "license_" + String.valueOf(CurrentLicenseNum) + ".jpg");
             tagPic.putExtra("NewPlate",true);
+            tagPic.putExtra("Plate",image);
             onDestroy();
             startActivity(tagPic);
         }
@@ -104,27 +106,10 @@ public class GetPicActivity extends Fragment {
     private Camera.PictureCallback capturedIt = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera arg1) {
 
-            // Get the path to the directory
-            File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "License_Plate");
-            Log.d("ADebugTag",imagesFolder.getAbsolutePath());
+            if (data != null) {
+                PictureTaken = true;
 
-            // If the directory doesn't exit, create one
-            if (!imagesFolder.exists()) {
-                imagesFolder.mkdirs();
-            }
-
-            // The current license name
-            String fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
-            File output = new File(imagesFolder, fileName);
-
-            // Check if the photo name exist and photo being taken already
-            while (output.exists() && !PictureTaken) {
-                CurrentLicenseNum++;
-                fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
-                output = new File(imagesFolder, fileName);
-            }
-            try {
-                // Extract the bitmap from data
+                //Extract the bitmap from data
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
                 // Only select the region we want
@@ -136,30 +121,17 @@ public class GetPicActivity extends Fragment {
                 bitmap = Bitmap.createBitmap(bitmap, 0,0,
                                             bitmap.getWidth(),bitmap.getHeight(),
                                             matrix, true);
-                
+
                 // Convert it back to byte array data
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] bmArray = stream.toByteArray(); // Get the underlying pixel bytes array
-
-                FileOutputStream imageFileOS = new FileOutputStream(output);
-                imageFileOS.write(bmArray);
-                imageFileOS.flush();
-                imageFileOS.close();
-
-                Toast.makeText(getActivity(),
-                               "License " + String.valueOf(CurrentLicenseNum)+ " Saved",
-                               Toast.LENGTH_SHORT).show();
-                PictureTaken = true;
-
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                Log.d("Error", "File not found: " + e.getMessage());
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                Log.d("Error", "Error accessing file: " + e.getMessage());
-                e.printStackTrace();
+                image = bmArray;
+                if (image != null) {
+                    Toast.makeText(getActivity(),
+                            "Photo Taken",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
             cameraObject.startPreview();
         }
@@ -203,3 +175,72 @@ public class GetPicActivity extends Fragment {
         }
     }
 }
+
+
+//            // Get the path to the directory
+//            File imagesFolder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "License_Plate");
+//            Log.d("ADebugTag",imagesFolder.getAbsolutePath());
+//
+//            // If the directory doesn't exit, create one
+//            if (!imagesFolder.exists()) {
+//                imagesFolder.mkdirs();
+//            }
+//
+//            // The current license name
+//            String fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
+//            String fileTextName = "license_" + String.valueOf(CurrentLicenseNum) + ".txt";
+//            File output = new File(imagesFolder, fileName);
+//            File output_text = new File(imagesFolder, fileTextName);
+//
+//            // Check if the photo name exist and photo being taken already
+//            while (output.exists() && !PictureTaken) {
+//                CurrentLicenseNum++;
+//                fileName = "license_" + String.valueOf(CurrentLicenseNum) + ".jpg";
+//                fileTextName = "license_" + String.valueOf(CurrentLicenseNum) + ".txt";
+//                output = new File(imagesFolder, fileName);
+//                output_text = new File(imagesFolder, fileTextName);
+//            }
+//            try {
+//                // Extract the bitmap from data
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//
+//                // Only select the region we want
+//                bitmap = ThumbnailUtils.extractThumbnail(bitmap, bitmap.getWidth()/9, bitmap.getHeight()/3);
+//
+//                //Rotate the bitmap
+//                Matrix matrix = new Matrix();
+//                matrix.postRotate(90);
+//                bitmap = Bitmap.createBitmap(bitmap, 0,0,
+//                                            bitmap.getWidth(),bitmap.getHeight(),
+//                                            matrix, true);
+//
+//                // Convert it back to byte array data
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                byte[] bmArray = stream.toByteArray(); // Get the underlying pixel bytes array
+//                image = bmArray;
+//
+//                FileOutputStream imageFileOS = new FileOutputStream(output);
+//                imageFileOS.write(bmArray);
+//                imageFileOS.flush();
+//                imageFileOS.close();
+//
+//                FileOutputStream textFileOS = new FileOutputStream(output_text);
+//                textFileOS.write("TEST".getBytes());
+//                textFileOS.flush();
+//                textFileOS.close();
+//
+//                Toast.makeText(getActivity(),
+//                               "License " + String.valueOf(CurrentLicenseNum)+ " Saved",
+//                               Toast.LENGTH_SHORT).show();
+//                PictureTaken = true;
+//
+//            } catch (FileNotFoundException e) {
+//                // TODO Auto-generated catch block
+//                Log.d("Error", "File not found: " + e.getMessage());
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                Log.d("Error", "Error accessing file: " + e.getMessage());
+//                e.printStackTrace();
+//            }

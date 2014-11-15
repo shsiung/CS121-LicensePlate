@@ -8,21 +8,23 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class TaggingMainActivity extends Activity {
     private AutoCompleteTextView spinnerStates;
@@ -32,11 +34,13 @@ public class TaggingMainActivity extends Activity {
     private EditText licenseNum;
     private CheckBox specialPlate;
     private boolean newPlate = false;
+    private byte[] plateThumbnail;
 
     private String[] state = { "CA", "VA", "NJ", "TN",
             "TA", "WS"};
 
-    private static String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+    private static String platePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+    private static String plateInfoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/License_Plate_Info";
 
     private GPSTracker gps;
 
@@ -77,6 +81,7 @@ public class TaggingMainActivity extends Activity {
         try {
             currentPlate.setPlateName(argument.getStringExtra("NameOfFile"));
             newPlate = argument.getBooleanExtra("NewPlate", defaultBool);
+            plateThumbnail = argument.getByteArrayExtra("Plate");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -102,38 +107,38 @@ public class TaggingMainActivity extends Activity {
     }
 
     public void loadLicense(String NameOfFile) {
-        File imagesFolder = new File(dirPath);
-        String imagePath = imagesFolder.getAbsolutePath() + "/" + NameOfFile;
-        if(imagesFolder.exists()) {
-            File plate = new File(imagePath);
-            if(plate.exists()) {
-                BitmapFactory.Options options;
-                try {
-                    options = new BitmapFactory.Options();
-                    options.inSampleSize = 1;  // Shrink the picture by a factor of 2
-                    Bitmap mBitmap = BitmapFactory.decodeFile(imagePath, options);
-                    if (mBitmap != null) {
-                        license.setImageBitmap(mBitmap);
-                    }
-                    if (newPlate){
-                        tesseract(mBitmap);
-                        loadGPSLocation();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                // Update GUI only if it's not new plot
-                if(!newPlate) {
+        Bitmap mBitmap;
+        if (newPlate) {
+            mBitmap = BitmapFactory.decodeByteArray(plateThumbnail, 0, plateThumbnail.length);
+            if (mBitmap != null) {
+                license.setImageBitmap(mBitmap);
+            }
+            tesseract(mBitmap);
+            loadGPSLocation();
+            specialPlate.setText("No");
+        }
+        else
+        {
+            File imagesFolder = new File(platePath);
+            String imagePath = imagesFolder.getAbsolutePath() + "/" + NameOfFile;
+            if (imagesFolder.exists()) {
+                File plate = new File(imagePath);
+                if (plate.exists()) {
+                    BitmapFactory.Options options;
                     try {
+                        options = new BitmapFactory.Options();
+                        options.inSampleSize = 1;  // Shrink the picture by a factor of 2
+                        mBitmap = BitmapFactory.decodeFile(imagePath, options);
+                        if (mBitmap != null) {
+                            license.setImageBitmap(mBitmap);
+                        }
                         currentPlate.setPlateStruct(plate.getName());
                         updateGui();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                else
-                    specialPlate.setText("No");
             }
         }
     }
@@ -177,27 +182,97 @@ public class TaggingMainActivity extends Activity {
         from.renameTo(to);
     }
 
-    /** Update Photo attributes before saving */
-    private void updatePhotoAttribute() {
-        String oldName;
-        if (newPlate)
-            oldName = currentPlate.getPlateName();
-        else
-            oldName = currentPlate.getPlateAddress();
+    private void saveNewPhotoInfo(String newName)
+    {
+        File infoFolder = new File(plateInfoPath);
+        if (!infoFolder.exists()){
+            infoFolder.mkdir();
+        }
 
+        String fileTextName = newName + ".txt";
+        File output_text = new File(infoFolder, fileTextName);
+
+        try {
+            FileOutputStream textFileOS = new FileOutputStream(output_text);
+            textFileOS.write(currentPlate.getPlateInfo().getBytes());
+            textFileOS.flush();
+            textFileOS.close();
+
+            Toast.makeText(getApplicationContext(),
+                    "License Saved",
+                    Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Log.d("Error", "Error accessing file: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }
+
+    /** Update Photo attributes before saving */
+    private void saveNewPhoto(String newName)
+    {
+        File imagesFolder = new File(platePath);
+
+        // If the directory doesn't exit, create one
+        if (!imagesFolder.exists()) {
+            imagesFolder.mkdirs();
+        }
+
+        // The current license name
+        String fileName = newName + ".jpg";
+        File output = new File(imagesFolder, fileName);
+
+        // Check if the photo name exist and photo being taken already
+        while (output.exists()) {
+            fileName = newName + ".jpg";
+            output = new File(imagesFolder, fileName);
+        }
+        try {
+            FileOutputStream imageFileOS = new FileOutputStream(output);
+            imageFileOS.write(plateThumbnail);
+            imageFileOS.flush();
+            imageFileOS.close();
+
+            Toast.makeText(getApplicationContext(),
+                    "License Saved",
+                    Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Log.d("Error", "Error accessing file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void updatePhotoAttribute(){
         currentPlate.setPlateSpecial(specialPlate.isChecked());
         currentPlate.setPlateState(spinnerStates.getText().toString());
         currentPlate.setPlateName(licenseNum.getText().toString());
-        String newName = currentPlate.getPlateAddress();
-        renamePhoto(dirPath+"/"+oldName,dirPath+"/"+newName);
     }
 
     /** Called when the user clicks the Save button */
     public void SaveTag(View view) {
+
+        String oldName;
+        oldName = currentPlate.getPlateName();
         updatePhotoAttribute();
-        Toast.makeText(getApplicationContext(),
-                "License Plate Tags Updated",
-                Toast.LENGTH_SHORT).show();
+        String newName = currentPlate.getPlateName();
+
+        if (newPlate)
+        {
+            saveNewPhoto(newName);
+            saveNewPhotoInfo(newName);
+        }
+        else
+        {
+            renamePhoto(platePath + "/" + oldName, platePath + "/" + newName);
+            Toast.makeText(getApplicationContext(),
+                    "License Plate Tags Updated",
+                    Toast.LENGTH_SHORT).show();
+        }
+
         gps.stopUsingGPS();
         finish();
     }
