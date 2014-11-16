@@ -115,7 +115,7 @@ public class TaggingMainActivity extends Activity {
             if (mBitmap != null) {
                 license.setImageBitmap(mBitmap);
             }
-            tesseract(mBitmap);
+            //tesseract(mBitmap);
             loadGPSLocation();
             specialPlate.setText("No");
         }
