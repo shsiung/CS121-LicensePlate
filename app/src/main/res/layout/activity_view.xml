@@ -14,7 +14,7 @@
         <Button
             android:id="@+id/queryBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/button_gen"
             android:textColor="#ffffff"
@@ -23,9 +23,12 @@
         <EditText
             android:id="@+id/queryContent"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_toLeftOf="@id/queryBtn"
-            android:hint="Search..." />
+            android:hint="Search..."
+            android:background="@drawable/tagging_gen"
+            android:padding="8dp"
+            />
 
     </RelativeLayout>
 

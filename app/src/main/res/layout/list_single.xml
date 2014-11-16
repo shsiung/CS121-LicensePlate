@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/icon"
         android:layout_toRightOf="@+id/icon"
-        android:textColor="#1AAE22"
+        android:textColor="@color/colorscheme"
         android:textSize="18sp" />
 
     <TextView
