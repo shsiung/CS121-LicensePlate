@@ -49,6 +49,7 @@ public class TaggingSearchViewActivity extends Fragment {
 
         File infoDir = new File(infoPath);
         plateInfoList.clear();
+        rowItems.clear();
 
         for(File f : infoDir.listFiles()){
             plateInfoList.add(new PlateStruct(f));
@@ -125,6 +126,12 @@ public class TaggingSearchViewActivity extends Fragment {
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        updatePlateInfo();
+        displayRows();
+    }
 
 
     private void displayRows() {

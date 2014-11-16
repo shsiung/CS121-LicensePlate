@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filterable {
+public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
 
     List<RowItem> rowItems;
     Context context;
@@ -93,52 +93,4 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
     }
 
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                Log.d("Filter","performing filtering");
-                Log.d("Filter constraint", constraint.toString());
-                FilterResults results = new FilterResults();
-
-                if(constraint==null || constraint.length()==0){
-                    results.values = rowItems;
-                    results.count = rowItems.size();
-                }
-                else{
-                    List<RowItem> nRowItems = new ArrayList<RowItem>();
-
-                    for(RowItem r : rowItems){
-                        Log.d("Title string",r.getTitle().toUpperCase());
-                        Log.d("Desc string",r.getDesc().toUpperCase());
-                        if(r.getTitle().toUpperCase().startsWith(constraint.toString().toUpperCase()) ||
-                                r.getDesc().toUpperCase().startsWith(constraint.toString().toUpperCase())){
-                            nRowItems.add(r);
-                        }
-                        results.values = nRowItems;
-                        results.count = nRowItems.size();
-                    }
-                }
-                return results;
-            };
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                Log.d("Test", "publishing");
-                if(results.count == 0){
-                    notifyDataSetInvalidated();
-                }
-                else {
-                    Log.d("results",results.values.toString());
-                    rowItems =(ArrayList<RowItem>) results.values;
-
-
-                    Log.d("Test", "Attempting to change");
-                    notifyDataSetChanged();
-                }
-            }
-        };
-    }
 }
-//http://www.survivingwithandroid.com/2012/10/android-listview-custom-filter-and.html
