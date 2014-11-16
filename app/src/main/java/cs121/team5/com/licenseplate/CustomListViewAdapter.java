@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filterable {
 
-    private List<RowItem> rowItems;
+    List<RowItem> rowItems;
     Context context;
 
     public CustomListViewAdapter(Context context, int resourceId,
