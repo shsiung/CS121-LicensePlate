@@ -35,11 +35,14 @@ import java.util.ArrayList;
 public class GPSMapLocator extends Fragment{
 
     GoogleMap map;
-    private static String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
+    private static String infoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate_Info";
+    private ArrayList<PlateStruct> plateInfoList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        plateInfoList = new ArrayList<PlateStruct>();
     }
 
     @Override
@@ -77,20 +80,32 @@ public class GPSMapLocator extends Fragment{
     }
 
     void importPlateMarker(){
-        File plateDir = new File(dirPath);
-        String[] separatedString = new String[5];
-        String plateName;
-        LatLng latlng;
-        for (File f : plateDir.listFiles()) {
-            Log.d("DebugTag", f.getName());
-            if (f.isFile())
-                separatedString = f.getName().split("_");
-                latlng = new LatLng(Double.parseDouble(separatedString[3]), Double.parseDouble(separatedString[4]));
-                plateName = "Plate: " + separatedString[1];
-                addPlateMarkers(loadLicensePic(f.getName()),
-                                latlng,
-                                plateName);
+        File plateInfoDir = new File(infoPath);
+
+        for(File f : plateInfoDir.listFiles()){
+            plateInfoList.add(new PlateStruct(f));
         }
+
+        for(int i=0; i< plateInfoList.size();++i ){
+            addPlateMarkers(getResizedBitmap(plateInfoList.get(i).getPlateBitmap(),150),
+                            plateInfoList.get(i).getPlateLatLng(),
+                            plateInfoList.get(i).getPlateName());
+        }
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
     void addPlateMarkers(Bitmap plate, LatLng latlng, String plateName){
@@ -99,27 +114,6 @@ public class GPSMapLocator extends Fragment{
                  .title(plateName)
                  .icon(BitmapDescriptorFactory
                          .fromBitmap(plate)));
-    }
-
-    public Bitmap loadLicensePic(String NameOfFile) {
-        File imagesFolder = new File(dirPath);
-        if(imagesFolder.exists()) {
-            if(new File(imagesFolder.getAbsolutePath() + "/" + NameOfFile).exists()) {
-                BitmapFactory.Options options;
-                try {
-                    options = new BitmapFactory.Options();
-                    options.inSampleSize = 6;  // Shrink the picture by a factor of 2
-                    Bitmap mBitmap = BitmapFactory.decodeFile(imagesFolder.getAbsolutePath() + "/" + NameOfFile, options);
-//                    Matrix matrix = new Matrix();
-//                    matrix.postRotate(90);
-//                    Bitmap rotatedBitmap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
-                    return mBitmap;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
     }
 
     @Override

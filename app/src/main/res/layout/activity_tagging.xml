@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_launcher_plate"
+        android:background="@drawable/tagging_gen"
+        android:padding="8dp"
         android:layout_centerHorizontal="true"/>
 
     <LinearLayout
@@ -122,6 +124,65 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:padding="8dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/timeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/gpsLayout" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date and Time:"
+            style="@style/textview_text"
+            />
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_weight="0.2"
+            android:textSize = "16sp"
+            android:shadowColor = "#000000"
+            android:shadowDx = "0.5"
+            android:shadowDy = "0.5"
+            android:background="@drawable/tagging_gen"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:padding="8dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/noteLayout"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/InnerRelativeLayout"
+        android:layout_below="@id/timeLayout" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Note:"
+            style="@style/textview_text"
+            />
+        <EditText
+            android:id="@+id/note"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.1"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:hint="Note goes here..."
+            android:background="@drawable/tagging_gen"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:padding="8dp"
+            android:inputType="text|textMultiLine|textCapSentences"
             />
     </LinearLayout>
 

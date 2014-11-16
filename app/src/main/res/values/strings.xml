@@ -7,7 +7,7 @@
     <string name="take_picture">Get picture!</string>
     <string name="Capture">Capture</string>
     <string name="title_activity_get_pic">Camera</string>
-    <string name="title_activity_tagging">Add Tags</string>
+    <string name="title_activity_tagging">Edit Tags</string>
     <string name="taggingMainView">Tagging Main View</string>
     <string name="preference_file_key">License_Plate_Records</string>
     <string name="SearchView">View Current Plates</string>
@@ -15,7 +15,7 @@
     <string name="Save">Save</string>
     <string name="Cancel">Cancel</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
-    <string name="title_activity_gpsmap_locator">GPSMapLocator</string>
+    <string name="title_activity_gpsmap_locator">GPS Map Locator</string>
     <string name="image">Thumbnail Image</string>
 
 </resources>
