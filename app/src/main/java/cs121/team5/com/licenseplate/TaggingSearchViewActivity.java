@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,11 +39,12 @@ public class TaggingSearchViewActivity extends Fragment {
 
        //Takes each picture and puts its information into the arraylist
     public void updatePlateInfo(){
-        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
-        File plateDir = new File(dirPath);
+        String infoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate_Info";
+
+        File infoDir = new File(infoPath);
         plateInfoList.clear();
 
-        for(File f : plateDir.listFiles()){
+        for(File f : infoDir.listFiles()){
             plateInfoList.add(new PlateStruct(f));
         }
     }
@@ -61,8 +63,11 @@ public class TaggingSearchViewActivity extends Fragment {
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
                 Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
-                String nameOfFile = plateInfoList.get(position).getPlateAddress();
+                String nameOfFile = plateInfoList.get(position).getPlateName();
+                Log.d("DEBUG", nameOfFile);
                 tagPic.putExtra("NameOfFile", nameOfFile);
+                tagPic.putExtra("NewPlate",false);
+                tagPic.putExtra("Plate",plateInfoList.get(position).getPlateBitmap());
                 startActivity(tagPic);
             }
         });
@@ -82,8 +87,6 @@ public class TaggingSearchViewActivity extends Fragment {
     private void displayRows() {
 
         rowItems = new ArrayList<RowItem>();
-        String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
-
 
         //Create a row item for each plate file
         rowItems = new ArrayList<RowItem>();

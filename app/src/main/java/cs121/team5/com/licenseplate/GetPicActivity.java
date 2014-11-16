@@ -90,7 +90,7 @@ public class GetPicActivity extends Fragment {
     public void TagPicture(View view){
         if(PictureTaken) {
             Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
-            tagPic.putExtra("NameOfFile", "license_" + String.valueOf(CurrentLicenseNum) + ".jpg");
+            tagPic.putExtra("NameOfFile", "newPic.jpg");
             tagPic.putExtra("NewPlate",true);
             tagPic.putExtra("Plate",image);
             onDestroy();

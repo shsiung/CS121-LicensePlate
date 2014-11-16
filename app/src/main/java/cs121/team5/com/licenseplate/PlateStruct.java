@@ -2,20 +2,29 @@ package cs121.team5.com.licenseplate;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by perry_000 on 11/9/2014.
  */
 public class PlateStruct {
+
+    private static String plateInfoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/License_Plate_Info";
     private String plateName;
     private String plateState;
     private LatLng plateLatLng;
     private Bitmap plateBitmap;
     private Boolean plateSpecial;
+    private ArrayList<String> plateInfo;
 
     public PlateStruct(){
         // Do Nothing
@@ -31,14 +40,7 @@ public class PlateStruct {
     }
 
     public PlateStruct(File f){
-        String[] separatedString = f.getName().split("_");
-
-        this.plateState = separatedString[0];
-        this.plateName = separatedString[1];
-        this.plateLatLng = new LatLng(Double.parseDouble(separatedString[3]),
-                Double.parseDouble(separatedString[4]));
-        this.plateSpecial = Boolean.parseBoolean(separatedString[2]);
-        this.plateBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+        setPlateStruct(f.getName());
     }
 
 
@@ -82,23 +84,35 @@ public class PlateStruct {
         return plateSpecial;
     }
 
-    public void setPlateStruct(String name){
-        String[] separatedString = name.split("_");
-        this.plateState = separatedString[0];
-        this.plateName = separatedString[1];
-        this.plateLatLng = new LatLng(Double.parseDouble(separatedString[3]),
-                Double.parseDouble(separatedString[4]));
-        this.plateSpecial = Boolean.parseBoolean(separatedString[2]);
-    }
+    public void setPlateStruct(String fileInfoName){
 
-    public String getPlateAddress(){
-        String nameOfFile =
-                this.getPlateState() + "_"+
-                this.getPlateName() + "_" +
-                this.getPlateSpecial().toString()+"_"+
-                this.getPlateLatLng().latitude+"_"+
-                this.getPlateLatLng().longitude+"_"+".jpg";
-        return nameOfFile;
+        File infoFolder = new File(plateInfoPath);
+        File output_text = new File(infoFolder, fileInfoName);
+        plateInfo = new ArrayList<String>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(output_text));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                plateInfo.add(line);
+            }
+        }
+        catch (IOException e) {
+            //You'll need to add proper error handling here
+            e.printStackTrace();
+        }
+
+        try {
+            this.setPlateState(plateInfo.get(0));
+            this.setPlateName(plateInfo.get(1));
+            this.setPlateSpecial(Boolean.getBoolean(plateInfo.get(2)));
+            this.setPlateLatLng(new LatLng(Double.parseDouble(plateInfo.get(3)),
+                    Double.parseDouble(plateInfo.get(4))));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public String getPlateInfo(){

@@ -63,12 +63,16 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                                 + "/License_Plate/";
-                File file = new File(dirPath + rowItem.getAddress());
-                Log.d("file", rowItem.getAddress());
+                String infoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                                 + "/License_Plate_info/";
+                String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        + "/License_Plate/";
+                File file = new File(imagePath + rowItem.getDesc()+".jpg");
+                File infoFile = new File(infoPath + rowItem.getDesc()+".txt");
+                //Log.d("file", rowItem.getDesc()+".jpg");
                 boolean deleted = file.delete();
-                if (deleted) {
+                boolean deletedInfo = infoFile.delete();
+                if (deleted && deletedInfo) {
                     remove(rowItem);
                     Toast.makeText(context, "Deleted plate", Toast.LENGTH_SHORT).show();
                 } else {

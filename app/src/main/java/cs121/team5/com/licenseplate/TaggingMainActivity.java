@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -121,19 +122,23 @@ public class TaggingMainActivity extends Activity {
         else
         {
             File imagesFolder = new File(platePath);
-            String imagePath = imagesFolder.getAbsolutePath() + "/" + NameOfFile;
+            String imagePath = imagesFolder.getAbsolutePath() + "/" + NameOfFile + ".jpg";
+
             if (imagesFolder.exists()) {
                 File plate = new File(imagePath);
                 if (plate.exists()) {
                     BitmapFactory.Options options;
                     try {
+                        // Set Thumbnail image
                         options = new BitmapFactory.Options();
                         options.inSampleSize = 1;  // Shrink the picture by a factor of 2
                         mBitmap = BitmapFactory.decodeFile(imagePath, options);
                         if (mBitmap != null) {
                             license.setImageBitmap(mBitmap);
                         }
-                        currentPlate.setPlateStruct(plate.getName());
+
+                        // Load plate info and update GUI
+                        currentPlate.setPlateStruct(NameOfFile+".txt");
                         updateGui();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -198,17 +203,33 @@ public class TaggingMainActivity extends Activity {
             textFileOS.flush();
             textFileOS.close();
 
-            Toast.makeText(getApplicationContext(),
-                    "License Saved",
-                    Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            Log.d("Error", "Error accessing file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void updatePhotoInfo(String oldName, String newName)
+    {
+        File infoFolder = new File(plateInfoPath);
+        String oldFileTextName = oldName + ".txt";
+        String fileTextName = newName + ".txt";
+        File output_new = new File(infoFolder, fileTextName);
+        File output_old = new File(infoFolder, oldFileTextName);
+        output_old.delete();
+
+        try {
+            FileOutputStream textFileOS = new FileOutputStream(output_new);
+            textFileOS.write(currentPlate.getPlateInfo().getBytes());
+            textFileOS.flush();
+            textFileOS.close();
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             Log.d("Error", "Error accessing file: " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
 
     /** Update Photo attributes before saving */
@@ -264,10 +285,14 @@ public class TaggingMainActivity extends Activity {
         {
             saveNewPhoto(newName);
             saveNewPhotoInfo(newName);
+            Toast.makeText(getApplicationContext(),
+                    "Plate Saved",
+                    Toast.LENGTH_SHORT).show();
         }
         else
         {
-            renamePhoto(platePath + "/" + oldName, platePath + "/" + newName);
+            renamePhoto(platePath + "/" + oldName + ".jpg", platePath + "/" + newName + ".jpg");
+            updatePhotoInfo(oldName, newName);
             Toast.makeText(getApplicationContext(),
                     "License Plate Tags Updated",
                     Toast.LENGTH_SHORT).show();
