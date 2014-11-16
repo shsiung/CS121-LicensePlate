@@ -63,7 +63,7 @@ public class TaggingSearchViewActivity extends Fragment {
         listView = (ListView) v
                 .findViewById(R.id.list);
 
-        final EditText searchBar = (EditText) v.findViewById(R.id.queryContent);
+        EditText searchBar = (EditText) v.findViewById(R.id.queryContent);
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -72,13 +72,12 @@ public class TaggingSearchViewActivity extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                TaggingSearchViewActivity.this.adapter.getFilter().filter(s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                String text = searchBar.getText().toString();
-                adapter.getFilter().filter(text);
+
             }
         });
 
