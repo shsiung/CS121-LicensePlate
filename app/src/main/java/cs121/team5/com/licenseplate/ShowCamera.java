@@ -69,7 +69,7 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         Paint paintText = new Paint();
         paintText.setAntiAlias(true);
         paintText.setStyle(Paint.Style.FILL);
-        paintText.setARGB(200,0,200,0);
+        paintText.setColor(getResources().getColor(R.color.colorscheme));
         paintText.setStrokeWidth(10);
         //Fill the screen
         canvas.drawPaint(paint);
@@ -80,14 +80,18 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         //Adjust the dimension values as needed
         canvas.drawRect((screenWidth/9),(screenHeight/3),8*(screenWidth/9),2*(screenHeight/3), paint);
 
+
         // Draw corner guidelines
-        canvas.drawLine((screenWidth/9),(screenHeight/3),(screenWidth/9),(screenHeight/3)+50,paintText);
+        canvas.drawLine((screenWidth/9),(screenHeight/3)-5,(screenWidth/9),(screenHeight/3)+50,paintText);
         canvas.drawLine((screenWidth/9),(screenHeight/3),(screenWidth/9)+50,(screenHeight/3),paintText);
-        canvas.drawLine(8*(screenWidth/9),(screenHeight/3),8*(screenWidth/9),(screenHeight/3)+50,paintText);
+
+        canvas.drawLine(8*(screenWidth/9),(screenHeight/3)-5,8*(screenWidth/9),(screenHeight/3)+50,paintText);
         canvas.drawLine(8*(screenWidth/9),(screenHeight/3),8*(screenWidth/9)-50,(screenHeight/3),paintText);
-        canvas.drawLine((screenWidth/9),2*(screenHeight/3),(screenWidth/9),2*(screenHeight/3)-50,paintText);
+
+        canvas.drawLine((screenWidth/9),2*(screenHeight/3)+5,(screenWidth/9),2*(screenHeight/3)-50,paintText);
         canvas.drawLine((screenWidth/9),2*(screenHeight/3),(screenWidth/9)+50,2*(screenHeight/3),paintText);
-        canvas.drawLine(8*(screenWidth/9),2*(screenHeight/3),8*(screenWidth/9),2*(screenHeight/3)-50,paintText);
+
+        canvas.drawLine(8*(screenWidth/9),2*(screenHeight/3)+5,8*(screenWidth/9),2*(screenHeight/3)-50,paintText);
         canvas.drawLine(8*(screenWidth/9),2*(screenHeight/3),8*(screenWidth/9)-50,2*(screenHeight/3),paintText);
     }
 
