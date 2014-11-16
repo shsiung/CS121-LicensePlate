@@ -19,6 +19,8 @@ import java.util.ArrayList;
 public class PlateStruct {
 
     private static String plateInfoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/License_Plate_Info";
+    private static String plateImagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/License_Plate";
+
     private String plateName;
     private String plateState;
     private LatLng plateLatLng;
@@ -40,7 +42,12 @@ public class PlateStruct {
     }
 
     public PlateStruct(File f){
+
+        int fileNamePos = f.getName().lastIndexOf(".");
+
         setPlateStruct(f.getName());
+        setPlateBitmap(f.getName().substring(0,fileNamePos)+".jpg");
+
     }
 
 
@@ -58,6 +65,26 @@ public class PlateStruct {
 
     public void setPlateBitmap(Bitmap plateBitmap) {
         this.plateBitmap = plateBitmap;
+    }
+
+    public void setPlateBitmap(String fileName) {
+        File imagesFolder = new File(plateImagePath);
+        String imagePath = imagesFolder.getAbsolutePath() + "/" + fileName;
+
+        if (imagesFolder.exists()) {
+            File plate = new File(imagePath);
+            if (plate.exists()) {
+                BitmapFactory.Options options;
+                try {
+                    // Set Thumbnail image
+                    options = new BitmapFactory.Options();
+                    options.inSampleSize = 1;  // Shrink the picture by a factor of 2
+                    setPlateBitmap(BitmapFactory.decodeFile(imagePath, options));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void setPlateSpecial(Boolean plateSpecial) {
@@ -105,7 +132,7 @@ public class PlateStruct {
         try {
             this.setPlateState(plateInfo.get(0));
             this.setPlateName(plateInfo.get(1));
-            this.setPlateSpecial(Boolean.getBoolean(plateInfo.get(2)));
+            this.setPlateSpecial(Boolean.valueOf(plateInfo.get(2)));
             this.setPlateLatLng(new LatLng(Double.parseDouble(plateInfo.get(3)),
                     Double.parseDouble(plateInfo.get(4))));
         }
