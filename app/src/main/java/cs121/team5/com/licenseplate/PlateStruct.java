@@ -37,6 +37,7 @@ public class PlateStruct {
         this.plateLatLng = plateLatLng;
         this.plateBitmap = plateBitmap;
         this.plateSpecial = plateSpecial;
+        this.plateAddress = createPlateAddress();
     }
 
     public PlateStruct(File f){
@@ -123,5 +124,11 @@ public class PlateStruct {
                 this.getPlateLatLng().latitude+"\r\n"+
                 this.getPlateLatLng().longitude;
         return nameOfFile;
+    }
+
+    public String getPlateAddress(){ return plateAddress;}
+
+    public void setPlateAddress(String address){
+        this.plateAddress = address;
     }
 }

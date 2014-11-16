@@ -208,6 +208,13 @@ public class TaggingMainActivity extends Activity {
             Log.d("Error", "Error accessing file: " + e.getMessage());
             e.printStackTrace();
         }
+    private void updatePhotoAttribute() {
+        String oldName = currentPlate.getPlateAddress();
+        currentPlate.setPlateSpecial(specialPlate.isChecked());
+        currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
+        currentPlate.setPlateName(licenseNum.getText().toString());
+        String newName = currentPlate.createPlateAddress();
+        renamePhoto(dirPath+"/"+oldName,dirPath+"/"+newName);
     }
 
     private void updatePhotoInfo(String oldName, String newName)
