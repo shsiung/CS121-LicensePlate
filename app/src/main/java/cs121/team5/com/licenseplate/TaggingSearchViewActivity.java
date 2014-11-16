@@ -38,6 +38,7 @@ public class TaggingSearchViewActivity extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         plateInfoList = new ArrayList<PlateStruct>();
+        rowItems = new ArrayList<RowItem>();
 
     }
 
@@ -48,9 +49,15 @@ public class TaggingSearchViewActivity extends Fragment {
 
         File infoDir = new File(infoPath);
         plateInfoList.clear();
+        rowItems.clear();
 
         for(File f : infoDir.listFiles()){
             plateInfoList.add(new PlateStruct(f));
+        }
+
+        for(int i=0; i< plateInfoList.size();++i ){
+            RowItem item = new RowItem(plateInfoList.get(i));
+            rowItems.add(item);
         }
     }
 
@@ -72,7 +79,16 @@ public class TaggingSearchViewActivity extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                TaggingSearchViewActivity.this.adapter.getFilter().filter(s);
+                rowItems.clear();
+                String constraint = s.toString().toUpperCase();
+                //Filter
+                for (PlateStruct plate : plateInfoList) {
+                    if (plate.getPlateState().toUpperCase().startsWith(constraint) ||
+                            plate.getPlateName().toUpperCase().startsWith(constraint)) {
+                        rowItems.add(new RowItem(plate));
+                    }
+                }
+                displayRows();
             }
 
             @Override
@@ -110,22 +126,19 @@ public class TaggingSearchViewActivity extends Fragment {
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        updatePlateInfo();
+        displayRows();
+    }
 
 
     private void displayRows() {
 
-        rowItems = new ArrayList<RowItem>();
-        rowItems = new ArrayList<RowItem>();
-        for(int i=0; i< plateInfoList.size();++i ){
-            RowItem item = new RowItem(plateInfoList.get(i));
-            rowItems.add(item);
-        }
-
         //Create and set the adapter
         adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
         listView.setAdapter(adapter);
-
-
     }
 
 
