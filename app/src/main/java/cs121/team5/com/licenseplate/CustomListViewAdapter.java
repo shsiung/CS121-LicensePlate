@@ -5,7 +5,9 @@ package cs121.team5.com.licenseplate;
  */
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,18 +18,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
 
+    List<RowItem> rowItems;
     Context context;
 
     public CustomListViewAdapter(Context context, int resourceId,
                                  List<RowItem> items) {
         super(context, resourceId, items);
         this.context = context;
+        this.rowItems = items;
     }
 
     /*private view holder class*/
@@ -38,9 +44,9 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
         Button delete;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        final RowItem rowItem = getItem(position);
+        final RowItem rowItem = rowItems.get(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -63,14 +69,19 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                                 + "/License_Plate/";
-                File file = new File(dirPath + rowItem.getAddress());
-                Log.d("file", rowItem.getAddress());
+                String infoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                                 + "/License_Plate_info/";
+                String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        + "/License_Plate/";
+                File file = new File(imagePath + rowItem.getDesc()+".jpg");
+                File infoFile = new File(infoPath + rowItem.getDesc()+".txt");
+                //Log.d("file", rowItem.getDesc()+".jpg");
                 boolean deleted = file.delete();
-                if (deleted) {
+                boolean deletedInfo = infoFile.delete();
+                if (deleted && deletedInfo) {
                     remove(rowItem);
                     Toast.makeText(context, "Deleted plate", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
                 } else {
                     Toast.makeText(context, "Could not delete plate", Toast.LENGTH_SHORT).show();
                 }
@@ -80,5 +91,6 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
         });
         return convertView;
     }
+
 
 }

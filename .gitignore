@@ -41,4 +41,6 @@ build/
 # Log Files
 *.log
 
-tesseract/build/
+
+/tesseract/build/
+
