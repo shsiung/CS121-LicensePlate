@@ -174,8 +174,7 @@ public class TaggingSearchViewActivity extends Fragment {
 
                 //Filter
                 for (PlateStruct plate : plateInfoList) {
-                    if (plate.getPlateState().toUpperCase().startsWith(constraint) ||
-                            plate.getPlateName().toUpperCase().startsWith(constraint)) {
+                    if (plate.getPlateInfo().toUpperCase().contains(constraint)){
                         rowItems.add(new RowItem(plate));
                     }
                     for(String abbreviation : abbreviations){
