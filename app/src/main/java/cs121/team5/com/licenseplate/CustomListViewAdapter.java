@@ -46,7 +46,7 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> implements Filt
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        RowItem rowItem = rowItems.get(position);
+        final RowItem rowItem = rowItems.get(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);

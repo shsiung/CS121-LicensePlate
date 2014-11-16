@@ -187,10 +187,9 @@ public class TaggingMainActivity extends Activity {
         from.renameTo(to);
     }
 
-    private void saveNewPhotoInfo(String newName)
-    {
+    private void saveNewPhotoInfo(String newName) {
         File infoFolder = new File(plateInfoPath);
-        if (!infoFolder.exists()){
+        if (!infoFolder.exists()) {
             infoFolder.mkdir();
         }
 
@@ -208,13 +207,6 @@ public class TaggingMainActivity extends Activity {
             Log.d("Error", "Error accessing file: " + e.getMessage());
             e.printStackTrace();
         }
-    private void updatePhotoAttribute() {
-        String oldName = currentPlate.getPlateAddress();
-        currentPlate.setPlateSpecial(specialPlate.isChecked());
-        currentPlate.setPlateState((String) spinnerStates.getSelectedItem());
-        currentPlate.setPlateName(licenseNum.getText().toString());
-        String newName = currentPlate.createPlateAddress();
-        renamePhoto(dirPath+"/"+oldName,dirPath+"/"+newName);
     }
 
     private void updatePhotoInfo(String oldName, String newName)
