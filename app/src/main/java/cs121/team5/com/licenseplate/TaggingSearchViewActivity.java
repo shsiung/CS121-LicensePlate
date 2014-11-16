@@ -1,5 +1,6 @@
 package cs121.team5.com.licenseplate;
 
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,6 @@ public class TaggingSearchViewActivity extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         plateInfoList = new ArrayList<PlateStruct>();
-
 
     }
 
@@ -87,10 +88,14 @@ public class TaggingSearchViewActivity extends Fragment {
                                     long arg3) {
                 Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
                 String nameOfFile = plateInfoList.get(position).getPlateName();
-                Log.d("DEBUG", nameOfFile);
                 tagPic.putExtra("NameOfFile", nameOfFile);
                 tagPic.putExtra("NewPlate",false);
-                tagPic.putExtra("Plate",plateInfoList.get(position).getPlateBitmap());
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                Bitmap plate = plateInfoList.get(position).getPlateBitmap();
+                plate.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                tagPic.putExtra("Plate",stream.toByteArray());
+                
                 startActivity(tagPic);
             }
         });
