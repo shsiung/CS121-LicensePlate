@@ -69,7 +69,7 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
         Paint paintText = new Paint();
         paintText.setAntiAlias(true);
         paintText.setStyle(Paint.Style.FILL);
-        paintText.setARGB(200,0,200,0);
+        paintText.setARGB(255,0,204,204);
         paintText.setStrokeWidth(10);
         //Fill the screen
         canvas.drawPaint(paint);

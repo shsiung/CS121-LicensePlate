@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class TaggingMainActivity extends Activity {
     private AutoCompleteTextView spinnerStates;
@@ -136,7 +137,6 @@ public class TaggingMainActivity extends Activity {
                         if (mBitmap != null) {
                             license.setImageBitmap(mBitmap);
                         }
-
                         // Load plate info and update GUI
                         currentPlate.setPlateStruct(NameOfFile+".txt");
                         updateGui();
@@ -272,6 +272,26 @@ public class TaggingMainActivity extends Activity {
         currentPlate.setPlateName(licenseNum.getText().toString());
     }
 
+    private boolean checkFormComplete() {
+        if (spinnerStates.getText().toString().matches("") || licenseNum.getText().toString().matches("")) {
+            Toast.makeText(getApplicationContext(),
+                        "Info contains empty field(s)",
+                        Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (!Arrays.asList(state).contains(spinnerStates.getText().toString()))
+        {
+            Toast.makeText(getApplicationContext(),
+                    "Illegal state name",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (licenseNum.getText().length() > 10) {
+            Toast.makeText(getApplicationContext(),
+                    "Illegal license plate number",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
     /** Called when the user clicks the Save button */
     public void SaveTag(View view) {
 
@@ -279,26 +299,25 @@ public class TaggingMainActivity extends Activity {
         oldName = currentPlate.getPlateName();
         updatePhotoAttribute();
         String newName = currentPlate.getPlateName();
-
-        if (newPlate)
+        if (checkFormComplete())
         {
-            saveNewPhoto(newName);
-            saveNewPhotoInfo(newName);
-            Toast.makeText(getApplicationContext(),
-                    "Plate Saved",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            renamePhoto(platePath + "/" + oldName + ".jpg", platePath + "/" + newName + ".jpg");
-            updatePhotoInfo(oldName, newName);
-            Toast.makeText(getApplicationContext(),
-                    "License Plate Tags Updated",
-                    Toast.LENGTH_SHORT).show();
-        }
+            if (newPlate) {
+                saveNewPhoto(newName);
+                saveNewPhotoInfo(newName);
+                Toast.makeText(getApplicationContext(),
+                        "Plate saved",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                renamePhoto(platePath + "/" + oldName + ".jpg", platePath + "/" + newName + ".jpg");
+                updatePhotoInfo(oldName, newName);
+                Toast.makeText(getApplicationContext(),
+                        "License plate tags updated",
+                        Toast.LENGTH_SHORT).show();
+            }
 
-        gps.stopUsingGPS();
-        finish();
+            gps.stopUsingGPS();
+            finish();
+        }
     }
 
     /** Called when the user clicks the Cancel button */
