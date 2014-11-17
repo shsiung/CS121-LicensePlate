@@ -38,8 +38,10 @@ public class TaggingMainActivity extends Activity {
     private boolean newPlate = false;
     private byte[] plateThumbnail;
 
-    private String[] state = { "CA", "VA", "NJ", "TN",
-            "TA", "WS"};
+    private String[] state = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI",
+            "ID", "IL", "IN", "IA", "KS","KY","LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT",
+            "NE", "NV", "NH", "NJ", "NM",  "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD",
+            "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI","WY"};
 
     private static String platePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
     private static String plateInfoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/License_Plate_Info";
