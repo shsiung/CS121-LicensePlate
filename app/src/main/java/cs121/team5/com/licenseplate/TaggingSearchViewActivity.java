@@ -177,9 +177,11 @@ public class TaggingSearchViewActivity extends Fragment {
                     if (plate.getPlateInfo().toUpperCase().contains(constraint)){
                         rowItems.add(new RowItem(plate));
                     }
-                    for(String abbreviation : abbreviations){
-                        if(plate.getPlateState().toUpperCase().startsWith(abbreviation)){
-                            rowItems.add(new RowItem(plate));
+                    else{
+                        for(String abbreviation : abbreviations){
+                            if(plate.getPlateState().toUpperCase().startsWith(abbreviation)) {
+                                rowItems.add(new RowItem(plate));
+                            }
                         }
                     }
                 }
