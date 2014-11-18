@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by perry_000 on 11/9/2014.
@@ -174,4 +175,60 @@ public class PlateStruct {
                 this.getPlateTime();
         return nameOfFile;
     }
+
+
+    //Comparator
+    public Comparator<PlateStruct> getComparator(final String sortBy){
+        if("state".equals(sortBy)){
+            return new Comparator<PlateStruct>() {
+                @Override
+                public int compare(PlateStruct lhs, PlateStruct rhs) {
+                    return lhs.getPlateState().compareTo(rhs.getPlateState());
+                }
+            };
+        }
+        else if("name".equals(sortBy)){
+            return new Comparator<PlateStruct>() {
+                @Override
+                public int compare(PlateStruct lhs, PlateStruct rhs) {
+                    return lhs.getPlateName().compareTo(rhs.getPlateName());
+                }
+            };
+        }
+        else if("date".equals(sortBy)){
+            return new Comparator<PlateStruct>() {
+                @Override
+                public int compare(PlateStruct lhs, PlateStruct rhs) {
+                    return lhs.getPlateTime().compareTo(rhs.getPlateTime());
+                }
+            };
+        }
+
+        else if("note".equals(sortBy)){
+            return new Comparator<PlateStruct>() {
+                @Override
+                public int compare(PlateStruct lhs, PlateStruct rhs) {
+                    return lhs.getPlateNote().compareTo(rhs.getPlateNote());
+                }
+            };
+        }
+
+
+        //default case
+        else{
+            return new Comparator<PlateStruct>() {
+                @Override
+                public int compare(PlateStruct lhs, PlateStruct rhs) {
+                    return lhs.getPlateState().compareTo(rhs.getPlateState());
+                }
+            };
+        }
+    }
+
+
+
+
+
+
+
 }

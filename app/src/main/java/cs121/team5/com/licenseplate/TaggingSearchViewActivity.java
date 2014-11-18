@@ -27,14 +27,15 @@ import java.util.Set;
 
 public class TaggingSearchViewActivity extends Fragment {
     ListView listView;
-    List<RowItem> rowItems;
+    List<PlateStruct> rowItems;
     ArrayList<PlateStruct> plateInfoList;
-    EditText editSearch;
 
-    SearchView searchView;
-    Object[] names;
     CustomListViewAdapter adapter;
-    ArrayList<String> mAllList = new ArrayList<String>();
+
+    String sortBy;
+    Boolean reverse;
+
+
 
 
     public static final HashMap<String,String> STATE_MAP;
@@ -119,7 +120,9 @@ public class TaggingSearchViewActivity extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         plateInfoList = new ArrayList<PlateStruct>();
-        rowItems = new ArrayList<RowItem>();
+        rowItems = new ArrayList<PlateStruct>();
+        sortBy = "plate";
+        reverse = false;
 
     }
 
@@ -137,8 +140,7 @@ public class TaggingSearchViewActivity extends Fragment {
         }
 
         for(int i=0; i< plateInfoList.size();++i ){
-            RowItem item = new RowItem(plateInfoList.get(i));
-            rowItems.add(item);
+            rowItems.add(plateInfoList.get(i));
         }
     }
 
@@ -175,12 +177,12 @@ public class TaggingSearchViewActivity extends Fragment {
                 //Filter
                 for (PlateStruct plate : plateInfoList) {
                     if (plate.getPlateInfo().toUpperCase().contains(constraint)){
-                        rowItems.add(new RowItem(plate));
+                        rowItems.add(plate);
                     }
                     else{
                         for(String abbreviation : abbreviations){
                             if(plate.getPlateState().toUpperCase().startsWith(abbreviation)) {
-                                rowItems.add(new RowItem(plate));
+                                rowItems.add(plate);
                             }
                         }
                     }
