@@ -172,6 +172,7 @@ public class GetPicActivity extends Fragment {
         if (showCamera == null){
             cameraObject = isCameraAvailable();
             showCamera = new ShowCamera(getActivity(), cameraObject);
+            camPreview.addView(showCamera);
         }
     }
 }

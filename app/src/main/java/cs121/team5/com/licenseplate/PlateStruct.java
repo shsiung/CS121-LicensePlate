@@ -23,6 +23,8 @@ public class PlateStruct {
 
     private String plateName;
     private String plateState;
+    private String plateNote;
+    private String plateTime;
     private LatLng plateLatLng;
     private Bitmap plateBitmap;
     private Boolean plateSpecial;
@@ -57,6 +59,14 @@ public class PlateStruct {
 
     public void setPlateState(String plateState) {
         this.plateState = plateState;
+    }
+
+    public void setPlateNote(String plateNote) {
+        this.plateNote = plateNote;
+    }
+
+    public void setPlateTime(String plateTime) {
+        this.plateTime = plateTime;
     }
 
     public void setPlateLatLng(LatLng plateLatLng) {
@@ -99,6 +109,14 @@ public class PlateStruct {
         return plateState;
     }
 
+    public String getPlateNote() {
+        return plateNote;
+    }
+
+    public String getPlateTime() {
+        return plateTime;
+    }
+
     public LatLng getPlateLatLng() {
         return plateLatLng;
     }
@@ -135,6 +153,9 @@ public class PlateStruct {
             this.setPlateSpecial(Boolean.valueOf(plateInfo.get(2)));
             this.setPlateLatLng(new LatLng(Double.parseDouble(plateInfo.get(3)),
                     Double.parseDouble(plateInfo.get(4))));
+            this.setPlateNote(plateInfo.get(5));
+            this.setPlateTime(plateInfo.get(6));
+
         }
         catch (Exception e)
         {
@@ -148,7 +169,9 @@ public class PlateStruct {
                 this.getPlateName() + "\r\n" +
                 this.getPlateSpecial().toString()+"\r\n"+
                 this.getPlateLatLng().latitude+"\r\n"+
-                this.getPlateLatLng().longitude;
+                this.getPlateLatLng().longitude+"\r\n"+
+                this.getPlateNote()+"\r\n"+
+                this.getPlateTime();
         return nameOfFile;
     }
 }
