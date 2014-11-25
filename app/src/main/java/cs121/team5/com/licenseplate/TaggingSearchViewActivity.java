@@ -201,12 +201,12 @@ public class TaggingSearchViewActivity extends Fragment {
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3) {
                 Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
-                String nameOfFile = plateInfoList.get(position).getPlateName();
+                String nameOfFile = rowItems.get(position).getPlateName();
                 tagPic.putExtra("NameOfFile", nameOfFile);
                 tagPic.putExtra("NewPlate",false);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                Bitmap plate = plateInfoList.get(position).getPlateBitmap();
+                Bitmap plate = rowItems.get(position).getPlateBitmap();
                 plate.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 tagPic.putExtra("Plate",stream.toByteArray());
                 
