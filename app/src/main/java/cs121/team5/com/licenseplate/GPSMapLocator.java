@@ -39,7 +39,6 @@ public class GPSMapLocator extends Fragment{
 
     GoogleMap map;
     private static String infoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate_Info";
-    private static String platePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
     private ArrayList<PlateStruct> plateInfoList;
 
     @Override
@@ -141,4 +140,23 @@ public class GPSMapLocator extends Fragment{
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        map.clear();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        map.clear();
+        try {
+            importPlateMarker();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
