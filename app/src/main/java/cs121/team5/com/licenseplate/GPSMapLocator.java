@@ -1,5 +1,6 @@
 package cs121.team5.com.licenseplate;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -21,8 +22,10 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -36,6 +39,7 @@ public class GPSMapLocator extends Fragment{
 
     GoogleMap map;
     private static String infoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate_Info";
+    private static String platePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
     private ArrayList<PlateStruct> plateInfoList;
 
     @Override
@@ -69,6 +73,16 @@ public class GPSMapLocator extends Fragment{
 
         // Make the view centering at U.S
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.850033,-87.6500523),3.5f));
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
+                tagPic.putExtra("NameOfFile", marker.getTitle());
+                tagPic.putExtra("NewPlate",false);
+                startActivity(tagPic);
+            }
+        });
 
         try {
             importPlateMarker();
