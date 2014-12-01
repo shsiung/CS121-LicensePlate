@@ -146,12 +146,12 @@ public class GPSMapLocator extends Fragment{
     {
         super.onPause();
         map.clear();
+        plateInfoList.clear();
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        map.clear();
         try {
             importPlateMarker();
         } catch (Exception e) {
