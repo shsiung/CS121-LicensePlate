@@ -71,7 +71,7 @@ public class GPSMapLocator extends Fragment{
         }
 
         // Make the view centering at U.S
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.850033,-87.6500523),3.5f));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.106234, -117.709312),16f));
 
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
