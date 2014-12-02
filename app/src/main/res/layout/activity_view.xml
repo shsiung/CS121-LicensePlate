@@ -21,6 +21,7 @@
             android:padding="8dp"
             />
 
+        
         <RadioGroup
             android:id="@+id/toggleGroup"
                     android:layout_width="fill_parent"
