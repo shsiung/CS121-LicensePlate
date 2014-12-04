@@ -2,8 +2,9 @@ package cs121.team5.com.licenseplate;
 
 import com.robotium.solo.Solo;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import android.view.ViewGroup;
 
-import cs121.team5.com.licenseplate.MainActivity;
 
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity>{
@@ -12,7 +13,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public MainActivityTest() {
         super(MainActivity.class);
-
     }
 
 
@@ -31,64 +31,98 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.finishOpenedActivities();
     }
 
-    public void testAddNote() throws Exception {
+    public void test() throws Exception {
         //Unlock the lock screen
         solo.unlockScreen();
-        solo.clickOnMenuItem("Add note");
-        //Assert that NoteEditor activity is opened
-        solo.assertCurrentActivity("Expected NoteEditor activity", "NoteEditor");
-        //In text field 0, enter Note 1
-        solo.enterText(0, "Note 1");
-        solo.goBack();
-        //Clicks on menu item
-        solo.clickOnMenuItem("Add note");
-        //In text field 0, type Note 2
-        solo.typeText(0, "Note 2");
-        //Go back to first activity
-        solo.goBack();
-        //Takes a screenshot and saves it in "/sdcard/Robotium-Screenshots/".
-        solo.takeScreenshot();
-        boolean notesFound = solo.searchText("Note 1") && solo.searchText("Note 2");
-        //Assert that Note 1 & Note 2 are found
-        assertTrue("Note 1 and/or Note 2 are not found", notesFound);
+        //Assert that Main activity is opened
+        solo.assertCurrentActivity("Expected Main activity", "MainActivity");
+
+        // Check on Tab Views
+        ViewGroup tabs = (ViewGroup) solo.getView(android.R.id.tabs);
+        View tabView = tabs.getChildAt(0); //
+        solo.clickOnView(tabView);
+        //GetPicActivityTest();
+
+        // Wait before click
+        solo.sleep(2000);
+        tabView = tabs.getChildAt(1); //
+        solo.clickOnView(tabView);
+        SearchViewActivityTest();
+
+        // Wait before click
+        solo.sleep(2000);
+        tabView = tabs.getChildAt(2); //
+        solo.clickOnView(tabView);
 
     }
 
-    public void testEditNote() throws Exception {
-        // Click on the second list line
-        solo.clickInList(2);
-        //Hides the soft keyboard
+    /*
+    *  This test the flow of GetPic activity.
+    *  It should takes a photo and then brings up the tagging view activity
+    *  and exit back again.
+    */
+    public void GetPicActivityTest(){
+
+        // Before taking a photo, should give warning
+        solo.clickOnText("Save Plate");
+        assertTrue(solo.waitForText("You haven't taken a photo yet!"));
+
+        solo.clickOnText("Capture");
+        assertTrue(solo.waitForText("Photo Taken"));
+
+        // After taking a photo, should bring out tag view
+        solo.clickOnText("Save Plate");
+        solo.assertCurrentActivity("Expect Tagging Activity", "TaggingMainActivity");
+
+        // Exit Tagging View
+        solo.clickOnText("Cancel");
+
+        // Return to main view
+        solo.assertCurrentActivity("Expected Main activity", "MainActivity");
+
+    }
+
+    public void SearchViewActivityTest() {
+
+        // Click the first item
+        solo.clickInList(0);
+
+        // Should bring up tagging view activity
+        solo.assertCurrentActivity("Expect Tagging Activity", "TaggingMainActivity");
+
+        String nameOfPlate = solo.getEditText(1).getText().toString();
+
+        // Exit Tagging View
         solo.hideSoftKeyboard();
-        // Change orientation of activity
-        solo.setActivityOrientation(Solo.LANDSCAPE);
-        // Change title
-        solo.clickOnMenuItem("Edit title");
-        //In first text field (0), add test
-        solo.enterText(0, " test");
-        solo.goBack();
-        solo.setActivityOrientation(Solo.PORTRAIT);
-        // (Regexp) case insensitive
-        boolean noteFound = solo.waitForText("(?i).*?note 1 test");
-        //Assert that Note 1 test is found
-        assertTrue("Note 1 test is not found", noteFound);
+        solo.clickOnText("Cancel");
 
-    }
+        // Return to main view
+        solo.assertCurrentActivity("Expected Main activity", "MainActivity");
 
-    public void testRemoveNote() throws Exception {
-        //(Regexp) case insensitive/text that contains "test"
-        solo.clickOnText("(?i).*?test.*");
-        //Delete Note 1 test
-        solo.clickOnMenuItem("Delete");
-        //Note 1 test should not be found
-        boolean noteFound = solo.searchText("Note 1 test");
-        //Assert that Note 1 test is not found
-        assertFalse("Note 1 Test is found", noteFound);
-        solo.clickLongOnText("Note 2");
-        //Clicks on Delete in the context menu
-        solo.clickOnText("Delete");
-        //Will wait 100 milliseconds for the text: "Note 2"
-        noteFound = solo.waitForText("Note 2", 1, 100);
-        //Assert that Note 2 is not found
-        assertFalse("Note 2 is found", noteFound);
+        // Click the first item
+        solo.clickInList(0);
+//        EditText enText = solo.getEditText(1);
+//        assertTrue(enText.getText().toString() == nameOfPlate);
+
+        String testString = "ROBOTEST";
+        solo.clearEditText(1);
+        solo.enterText(1,testString);
+
+        // Save new plate info
+        solo.clickOnText("Save");
+
+        // Return to main view
+        solo.assertCurrentActivity("Expected Main activity", "MainActivity");
+
+        solo.clickInList(0);
+//        enText = solo.getEditText(1);
+//        assertTrue(enText.toString() == testString);
+
+        // Exit Tagging View
+        solo.clickOnText("Cancel");
+
+        // Return to main view
+        solo.assertCurrentActivity("Expected Main activity", "MainActivity");
+
     }
 }
