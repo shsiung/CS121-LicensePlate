@@ -1,6 +1,9 @@
 VehiCool
+
 Developed by Jerry Hsiung and Perry Holen
+
 for Client Team of
+
 Maury Quijada, Angela Chin, and Trang Vy
 
 VehiCool - Introduction
@@ -25,6 +28,21 @@ rectangular center. The clear center has green corner markings and denotes the a
 that should be aligned with the plate. Upon taking a picture, the application crops the photo to
 only include what is inside the clear center. It then runs text recognition on the photo and
 passes the photo's directory address along with any recognized text to the tagging page.
+
+Quick Install
+==================
+The easiest way to install the app is by cloning the repository and compiling the files with your
+favortite android editor. This can be done with the following command:
+
+	git clone https://github.com/shsiung/CS121-LicensePlate.git
+
+The app requires use of a training set for tesseract that needs to be uploaded to the device storage.
+Please follow the steps below:
+1. Go to the following address and download the [training set](https://code.google.com/p/tesseract-ocr/downloads/list.) for your language.
+2. Unzip the file and then rename the directory tesseract-ocr to tesseract_languages 
+3. Then upload the training set to your device done with the following command. 
+
+	adb push <your-path-to-tesseract_languages> /mnt/sdcard/
 
 Directory Overview
 ==================
