@@ -46,7 +46,7 @@ for your language.
 3. Then upload the training set to your device done with the following command.
 	
 
-		adb /push your-path-to-tesseract_languages/ /mnt/sdcard/
+		adb push (your-path-to-tesseract_languages) /mnt/sdcard/
 
 Directory Overview
 ==================
