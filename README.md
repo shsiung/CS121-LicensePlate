@@ -8,4 +8,15 @@ Opening the app first loads a splash-screen that contains a logos and our names 
 
 The camera page uses an active preview from the back camera on the device and before displaying it, draws a guidance overlay onto the preview. The overlay is a translucent grey border with a clear rectangular center. The clear center has green corner markings and denotes the area of the preview that should be aligned with the plate. Upon taking a picture, the application crops the photo to only include what is inside the clear center. It then runs text recognition on the photo and  passes the photo's directory address along with any recognized text to the tagging page. 
 
+Third Party Libraries
+==================
+VehiCool uses several third party libraries, including:
+
+For map displaying, we use [Google Map](https://developers.google.com/maps/documentation/android/):
+
+For text recognition, we use [Tesseract](https://code.google.com/p/tesseract-ocr/):
+
+For image processing, we use [OpenCV for Android](http://opencv.org/platforms/android.html):
+
+
 The License Plate Project for CS121
