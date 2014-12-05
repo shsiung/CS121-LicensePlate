@@ -16,8 +16,8 @@ Directory Overview
 		- Main source files
 			- Java files
 			- Resource files
-				- drawables bitmaps 
-				- layout files
+				- Drawables bitmaps 
+				- Layout files
 	- openCV library files 
 	- tesseract library files
 
