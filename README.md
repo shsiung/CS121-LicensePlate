@@ -28,6 +28,7 @@ VehiCool uses several open source third party libraries, including:
 - For map displaying, we use [Google Map API v2](https://developers.google.com/maps/documentation/android/).
 - For text recognition, we use [Tesseract](https://code.google.com/p/tesseract-ocr/).
 - For image processing, we use [OpenCV for Android](http://opencv.org/platforms/android.html).
+- For Android testing, we use [Robotium](https://code.google.com/p/robotium/).
 
 License
 =======
