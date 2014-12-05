@@ -41,7 +41,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         ViewGroup tabs = (ViewGroup) solo.getView(android.R.id.tabs);
         View tabView = tabs.getChildAt(0); //
         solo.clickOnView(tabView);
-        //GetPicActivityTest();
+        GetPicActivityTest();
 
         // Wait before click
         solo.sleep(2000);
