@@ -8,6 +8,13 @@ Opening the app first loads a splash-screen that contains a logos and our names 
 
 The camera page uses an active preview from the back camera on the device and before displaying it, draws a guidance overlay onto the preview. The overlay is a translucent grey border with a clear rectangular center. The clear center has green corner markings and denotes the area of the preview that should be aligned with the plate. Upon taking a picture, the application crops the photo to only include what is inside the clear center. It then runs text recognition on the photo and  passes the photo's directory address along with any recognized text to the tagging page. 
 
+Directory Overview
+==================
+- Main Directory
+	- VehiCool source files (src)
+	- openCV library files 
+	- tesseract library files
+
 Third Party Libraries
 ==================
 VehiCool uses several third party libraries to a, including:
