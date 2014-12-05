@@ -42,9 +42,10 @@ Please follow the steps below:
 
 1. Go to the following address and download the [training set](https://code.google.com/p/tesseract-ocr/downloads/list.) for your language.
 2. Unzip the file and then rename the directory tesseract-ocr to tesseract_languages 
-3. Then upload the training set to your device done with the following command. 
+3. Then upload the training set to your device done with the following command.
+	
 
-	adb push <your-path-to-tesseract_languages> /mnt/sdcard/
+		adb /push your-path-to-tesseract_languages/ /mnt/sdcard/
 
 Directory Overview
 ==================
