@@ -15,11 +15,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +36,7 @@ public class TaggingSearchViewActivity extends Fragment {
 
     CustomListViewAdapter adapter;
 
-    String sortBy;
+    SortBy sortBy;
     Boolean reverse;
 
 
@@ -119,9 +123,12 @@ public class TaggingSearchViewActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         plateInfoList = new ArrayList<PlateStruct>();
         rowItems = new ArrayList<PlateStruct>();
-        sortBy = "plate";
+        sortBy = SortBy.STATE;
         reverse = false;
 
     }
@@ -152,6 +159,26 @@ public class TaggingSearchViewActivity extends Fragment {
 
         listView = (ListView) v
                 .findViewById(R.id.list);
+
+        //RadioGroup Listener
+        final RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.toggleGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                for (int j = 0; j < radioGroup.getChildCount(); j++) {
+                    final ToggleButton view = (ToggleButton) radioGroup.getChildAt(j);
+                    if(view.getId() == checkedId){
+                        view.setChecked(true);
+                        sortBy = SortBy.values()[j];
+                    }
+                    else{
+                        view.setChecked(false);
+                    }
+                }
+                sortRows();
+            }
+        });
+
 
         EditText searchBar = (EditText) v.findViewById(R.id.queryContent);
         searchBar.addTextChangedListener(new TextWatcher() {
@@ -196,6 +223,7 @@ public class TaggingSearchViewActivity extends Fragment {
             }
         });
 
+        //List View Listener
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
@@ -220,18 +248,22 @@ public class TaggingSearchViewActivity extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         updatePlateInfo();
+        sortRows();
         displayRows();
-
-
     }
 
     @Override
     public void onResume(){
         super.onResume();
         updatePlateInfo();
+        sortRows();
         displayRows();
     }
 
+    private void sortRows() {
+        Collections.sort(rowItems, PlateStruct.getComparator(sortBy));
+        displayRows();
+    }
 
     private void displayRows() {
 
@@ -239,6 +271,9 @@ public class TaggingSearchViewActivity extends Fragment {
         adapter = new CustomListViewAdapter(getActivity(), R.layout.list_single, rowItems);
         listView.setAdapter(adapter);
     }
+
+
+
 
 
 }

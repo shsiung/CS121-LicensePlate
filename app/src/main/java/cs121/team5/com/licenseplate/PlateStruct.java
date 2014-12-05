@@ -178,8 +178,8 @@ public class PlateStruct {
 
 
     //Comparator
-    public Comparator<PlateStruct> getComparator(final String sortBy){
-        if("state".equals(sortBy)){
+    public static Comparator<PlateStruct> getComparator(final SortBy sortBy){
+        if(sortBy==SortBy.STATE){
             return new Comparator<PlateStruct>() {
                 @Override
                 public int compare(PlateStruct lhs, PlateStruct rhs) {
@@ -187,7 +187,7 @@ public class PlateStruct {
                 }
             };
         }
-        else if("name".equals(sortBy)){
+        else if(sortBy==SortBy.NUMBER){
             return new Comparator<PlateStruct>() {
                 @Override
                 public int compare(PlateStruct lhs, PlateStruct rhs) {
@@ -195,7 +195,7 @@ public class PlateStruct {
                 }
             };
         }
-        else if("date".equals(sortBy)){
+        else if(sortBy==SortBy.DATE){
             return new Comparator<PlateStruct>() {
                 @Override
                 public int compare(PlateStruct lhs, PlateStruct rhs) {
@@ -203,17 +203,6 @@ public class PlateStruct {
                 }
             };
         }
-
-        else if("note".equals(sortBy)){
-            return new Comparator<PlateStruct>() {
-                @Override
-                public int compare(PlateStruct lhs, PlateStruct rhs) {
-                    return lhs.getPlateNote().compareTo(rhs.getPlateNote());
-                }
-            };
-        }
-
-
         //default case
         else{
             return new Comparator<PlateStruct>() {

@@ -3,6 +3,7 @@ package cs121.team5.com.licenseplate;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,8 +11,10 @@ import android.view.View;
 
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 
@@ -70,6 +73,10 @@ public class MainActivity extends FragmentActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onToggle(View view){
+        ((RadioGroup)view.getParent()).check(view.getId());
     }
 
 }
