@@ -11,24 +11,54 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/queryBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/button_gen"
-            android:textColor="#ffffff"
-            android:text="Search"
-            />
+
         <EditText
             android:id="@+id/queryContent"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_toLeftOf="@id/queryBtn"
             android:hint="Search..."
             android:background="@drawable/tagging_gen"
             android:padding="8dp"
             />
+
+        <RadioGroup
+            android:id="@+id/toggleGroup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/queryContent"
+            >
+
+            <ToggleButton android:id="@+id/btn_State"
+                          android:layout_height="wrap_content"
+                          android:layout_width="fill_parent"
+                          android:layout_weight="1"
+                          android:textSize="14sp"
+                          android:textOn="@string/sortState"
+                          android:textOff="@string/sortState"
+                          android:onClick="onToggle"
+                          android:checked="true"
+                />
+            <ToggleButton android:id="@+id/btn_Name"
+                          android:layout_height="wrap_content"
+                          android:layout_width="fill_parent"
+                          android:layout_weight="1"
+                          android:textSize="14sp"
+                          android:textOn="@string/sortName"
+                          android:textOff="@string/sortName"
+                          android:onClick="onToggle"
+                />
+            <ToggleButton android:id="@+id/btn_Date"
+                          android:layout_height="wrap_content"
+                          android:layout_width="fill_parent"
+                          android:layout_weight="1"
+                          android:textSize="14sp"
+                          android:textOn="@string/sortDate"
+                          android:textOff="@string/sortDate"
+                          android:onClick="onToggle"
+                />
+        </RadioGroup>
 
     </RelativeLayout>
 

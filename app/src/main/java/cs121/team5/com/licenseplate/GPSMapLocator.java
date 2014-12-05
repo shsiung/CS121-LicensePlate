@@ -1,14 +1,10 @@
 package cs121.team5.com.licenseplate;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +17,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
@@ -68,7 +65,17 @@ public class GPSMapLocator extends Fragment{
         }
 
         // Make the view centering at U.S
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.850033,-87.6500523),3.5f));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.106234, -117.709312),16f));
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent tagPic = new Intent(getActivity(), TaggingMainActivity.class);
+                tagPic.putExtra("NameOfFile", marker.getTitle());
+                tagPic.putExtra("NewPlate",false);
+                startActivity(tagPic);
+            }
+        });
 
         try {
             importPlateMarker();
@@ -126,4 +133,23 @@ public class GPSMapLocator extends Fragment{
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        map.clear();
+        plateInfoList.clear();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        try {
+            importPlateMarker();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

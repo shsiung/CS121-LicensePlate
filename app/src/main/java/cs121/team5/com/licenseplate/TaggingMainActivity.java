@@ -19,27 +19,32 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
-import java.io.BufferedReader;
+import org.w3c.dom.Text;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class TaggingMainActivity extends Activity {
-    private AutoCompleteTextView spinnerStates;
-    private TextView gpsLocation;
+    private AutoCompleteTextView plateState;
+    private TextView plateLocation;
+    private TextView plateTime;
     private PlateStruct currentPlate;
     private ImageView license;
-    private EditText licenseNum;
-    private CheckBox specialPlate;
+    private EditText plateNum;
+    private EditText plateNote;
+    private CheckBox plateSpecial;
     private boolean newPlate = false;
     private byte[] plateThumbnail;
 
-    private String[] state = { "CA", "VA", "NJ", "TN",
-            "TA", "WS"};
+    private String[] state = { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI",
+            "ID", "IL", "IN", "IA", "KS","KY","LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT",
+            "NE", "NV", "NH", "NJ", "NM",  "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD",
+            "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI","WY"};
 
     private static String platePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+ "/License_Plate";
     private static String plateInfoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/License_Plate_Info";
@@ -56,18 +61,20 @@ public class TaggingMainActivity extends Activity {
 
         setContentView(R.layout.activity_tagging);
         license = (ImageView) findViewById(R.id.licenseView);
-        gpsLocation = (TextView) findViewById(R.id.gpsTextView);
-        spinnerStates = (AutoCompleteTextView) findViewById(R.id.osversions);
-        spinnerStates.setThreshold(1);
-        licenseNum = (EditText) findViewById(R.id.plateNumber);
-        specialPlate = (CheckBox) findViewById(R.id.specialCB);
-        specialPlate.setOnClickListener(new View.OnClickListener() {
+        plateLocation = (TextView) findViewById(R.id.gpsTextView);
+        plateTime = (TextView) findViewById(R.id.timeTextView);
+        plateState = (AutoCompleteTextView) findViewById(R.id.osversions);
+        plateState.setThreshold(1);
+        plateNum = (EditText) findViewById(R.id.plateNumber);
+        plateNote = (EditText) findViewById(R.id.note);
+        plateSpecial = (CheckBox) findViewById(R.id.specialCB);
+        plateSpecial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(specialPlate.isChecked()){
-                    specialPlate.setText("Yes");
-                }else{
-                    specialPlate.setText("No");
+                if (plateSpecial.isChecked()) {
+                    plateSpecial.setText("Yes");
+                } else {
+                    plateSpecial.setText("No");
                 }
             }
         });
@@ -76,7 +83,7 @@ public class TaggingMainActivity extends Activity {
                 R.layout.state_dropdown, state);
         adapter_state
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerStates.setAdapter(adapter_state);
+        plateState.setAdapter(adapter_state);
 
         // Get the argument from the intent called by parent activity
         Intent argument = getIntent();
@@ -88,24 +95,30 @@ public class TaggingMainActivity extends Activity {
         catch (Exception e) {
             e.printStackTrace();
         }
-
         loadLicense(currentPlate.getPlateName());
     }
 
-    public void loadGPSLocation(){
+    private void loadGPSLocation(){
         gps.showSettingsAlert();
         double lat;
         double lng;
         if(gps.canGetLocation()) {
             lat = gps.getLatitude();    // returns latitude
             lng = gps.getLongitude(); // returns longitude
-            gpsLocation.setText(String.valueOf(lat) + ", " + String.valueOf(lng));
+            plateLocation.setText(String.valueOf(lat) + ", " + String.valueOf(lng));
             currentPlate.setPlateLatLng(new LatLng(lat,lng));
         }
         else{
-            gpsLocation.setText("INVALID");
+            plateLocation.setText("INVALID");
         }
 
+    }
+
+    private void loadTime(){
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        dateFormatter.setLenient(false);
+        Date today = new Date();
+        plateTime.setText(dateFormatter.format(today));
     }
 
     public void loadLicense(String NameOfFile) {
@@ -118,7 +131,8 @@ public class TaggingMainActivity extends Activity {
             }
             //tesseract(mBitmap);
             loadGPSLocation();
-            specialPlate.setText("No");
+            loadTime();
+            plateSpecial.setText("No");
         }
         else
         {
@@ -151,15 +165,17 @@ public class TaggingMainActivity extends Activity {
     /** Update GUI */
     public void updateGui()
     {
-        gpsLocation.setText(currentPlate.getPlateLatLng().latitude + "," +
-        currentPlate.getPlateLatLng().longitude );
-        licenseNum.setText(currentPlate.getPlateName());
-        spinnerStates.setText(currentPlate.getPlateState());
-        specialPlate.setChecked(currentPlate.getPlateSpecial());
-        if (specialPlate.isChecked())
-            specialPlate.setText("Yes");
+        plateLocation.setText(currentPlate.getPlateLatLng().latitude + "," +
+                currentPlate.getPlateLatLng().longitude);
+        plateNum.setText(currentPlate.getPlateName());
+        plateState.setText(currentPlate.getPlateState());
+        plateSpecial.setChecked(currentPlate.getPlateSpecial());
+        plateNote.setText(currentPlate.getPlateNote());
+        plateTime.setText(currentPlate.getPlateTime());
+        if (plateSpecial.isChecked())
+            plateSpecial.setText("Yes");
         else
-            specialPlate.setText("No");
+            plateSpecial.setText("No");
     }
 
     /** Text recognition library */
@@ -172,7 +188,7 @@ public class TaggingMainActivity extends Activity {
         baseApi.end();
 
         if (recognizedText.length() != 0) {
-            licenseNum.setText(recognizedText);
+            plateNum.setText(recognizedText);
         }
     }
 
@@ -267,24 +283,26 @@ public class TaggingMainActivity extends Activity {
         }
     }
     private void updatePhotoAttribute(){
-        currentPlate.setPlateSpecial(specialPlate.isChecked());
-        currentPlate.setPlateState(spinnerStates.getText().toString());
-        currentPlate.setPlateName(licenseNum.getText().toString());
+        currentPlate.setPlateSpecial(plateSpecial.isChecked());
+        currentPlate.setPlateState(plateState.getText().toString());
+        currentPlate.setPlateName(plateNum.getText().toString());
+        currentPlate.setPlateNote(plateNote.getText().toString());
+        currentPlate.setPlateTime(plateTime.getText().toString());
     }
 
     private boolean checkFormComplete() {
-        if (spinnerStates.getText().toString().matches("") || licenseNum.getText().toString().matches("")) {
+        if (plateState.getText().toString().matches("") || plateNum.getText().toString().matches("")) {
             Toast.makeText(getApplicationContext(),
                         "Info contains empty field(s)",
                         Toast.LENGTH_SHORT).show();
             return false;
-        } else if (!Arrays.asList(state).contains(spinnerStates.getText().toString()))
+        } else if (!Arrays.asList(state).contains(plateState.getText().toString()))
         {
             Toast.makeText(getApplicationContext(),
                     "Illegal state name",
                     Toast.LENGTH_SHORT).show();
             return false;
-        } else if (licenseNum.getText().length() > 10) {
+        } else if (plateNum.getText().length() > 10) {
             Toast.makeText(getApplicationContext(),
                     "Illegal license plate number",
                     Toast.LENGTH_SHORT).show();

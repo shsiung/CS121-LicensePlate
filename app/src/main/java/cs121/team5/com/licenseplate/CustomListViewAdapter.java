@@ -24,13 +24,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
+public class CustomListViewAdapter extends ArrayAdapter<PlateStruct> {
 
-    List<RowItem> rowItems;
+    List<PlateStruct> rowItems;
     Context context;
 
     public CustomListViewAdapter(Context context, int resourceId,
-                                 List<RowItem> items) {
+                                 List<PlateStruct> items) {
         super(context, resourceId, items);
         this.context = context;
         this.rowItems = items;
@@ -46,7 +46,7 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        final RowItem rowItem = rowItems.get(position);
+        final PlateStruct rowItem = rowItems.get(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -62,9 +62,10 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.txtDesc.setText(rowItem.getDesc());
-        holder.txtTitle.setText(rowItem.getTitle());
-        holder.imageView.setImageBitmap(rowItem.getImageBitmap());
+        //Set what appears in each field
+        holder.txtDesc.setText(rowItem.getPlateName());
+        holder.txtTitle.setText(rowItem.getPlateState());
+        holder.imageView.setImageBitmap(rowItem.getPlateBitmap());
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +74,8 @@ public class CustomListViewAdapter extends ArrayAdapter<RowItem> {
                                  + "/License_Plate_info/";
                 String imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                         + "/License_Plate/";
-                File file = new File(imagePath + rowItem.getDesc()+".jpg");
-                File infoFile = new File(infoPath + rowItem.getDesc()+".txt");
+                File file = new File(imagePath + rowItem.getPlateName()+".jpg");
+                File infoFile = new File(infoPath + rowItem.getPlateName()+".txt");
                 //Log.d("file", rowItem.getDesc()+".jpg");
                 boolean deleted = file.delete();
                 boolean deletedInfo = infoFile.delete();

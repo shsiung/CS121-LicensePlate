@@ -17,5 +17,8 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_gpsmap_locator">GPS Map Locator</string>
     <string name="image">Thumbnail Image</string>
+    <string name="sortState">State</string>
+    <string name="sortName">Number</string>
+    <string name="sortDate">Date</string>
 
 </resources>
