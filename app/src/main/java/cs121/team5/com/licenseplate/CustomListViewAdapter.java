@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class CustomListViewAdapter extends ArrayAdapter<PlateStruct> {
         ImageView imageView;
         TextView txtTitle;
         TextView txtDesc;
+        ImageView special;
         Button delete;
     }
 
@@ -56,6 +58,7 @@ public class CustomListViewAdapter extends ArrayAdapter<PlateStruct> {
             holder.txtDesc = (TextView) convertView.findViewById(R.id.desc);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
             holder.imageView = (ImageView) convertView.findViewById(R.id.icon);
+            holder.special = (ImageView) convertView.findViewById(R.id.star);
             holder.delete = (Button) convertView.findViewById(R.id.btnDelete);
             convertView.setTag(holder);
         } else {
@@ -66,6 +69,14 @@ public class CustomListViewAdapter extends ArrayAdapter<PlateStruct> {
         holder.txtDesc.setText(rowItem.getPlateName());
         holder.txtTitle.setText(rowItem.getPlateState());
         holder.imageView.setImageBitmap(rowItem.getPlateBitmap());
+
+        //Special Plate Star
+        if(rowItem.getPlateSpecial()){
+            holder.special.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.special.setVisibility(View.GONE);
+        }
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override

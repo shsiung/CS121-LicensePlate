@@ -20,5 +20,6 @@
     <string name="sortState">State</string>
     <string name="sortName">Number</string>
     <string name="sortDate">Date</string>
+    <string name="favorite">Special Plate</string>
 
 </resources>

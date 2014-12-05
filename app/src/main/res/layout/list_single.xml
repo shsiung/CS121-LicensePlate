@@ -4,12 +4,21 @@
     android:layout_height="fill_parent" >
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/image"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/icon"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:contentDescription="@string/image"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp" />-->
 
     <TextView
         android:id="@+id/title"
@@ -33,6 +42,29 @@
         android:paddingBottom="5dp"
         android:textColor="#000000"
         android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/star"
+        android:src="@drawable/star"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:contentDescription="@string/favorite"
+        android:layout_toLeftOf="@+id/btnDelete"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="10dp" />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/star"-->
+        <!--android:src="@drawable/star"-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:contentDescription="@string/favorite"-->
+        <!--android:layout_toRightof="@+id/title"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:paddingLeft="30dp"-->
+        <!--android:paddingRight="10dp" />-->
+
     <Button
         android:id="@+id/btnDelete"
         android:layout_height="30dp"
