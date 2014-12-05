@@ -40,7 +40,7 @@ favortite android editor. This can be done with the following command:
 The app requires use of a training set for tesseract that needs to be uploaded to the device storage.
 Please follow the steps below:
 
-1. Go to the following address and download the [training set](https://code.google.com/p/tesseract-ocr/downloads/list.) 
+1. Go to the following address and download the [training set](https://code.google.com/p/tesseract-ocr/downloads/list) 
 for your language.
 2. Unzip the file and then rename the directory tesseract-ocr to tesseract_languages 
 3. Then upload the training set to your device done with the following command.
