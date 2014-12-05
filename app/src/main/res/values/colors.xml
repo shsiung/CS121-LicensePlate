@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="colorscheme" type = "color">#006B6B</item>
+    <item name="gray" type = "color">#9a9a9a</item>
 </resources>

@@ -34,6 +34,7 @@
             >
 
             <ToggleButton android:id="@+id/btn_State"
+                          android:background="@drawable/my_btn_toggle"
                           android:layout_height="wrap_content"
                           android:layout_width="fill_parent"
                           android:layout_weight="1"
@@ -44,6 +45,7 @@
                           android:checked="true"
                 />
             <ToggleButton android:id="@+id/btn_Name"
+                          android:background="@drawable/my_btn_toggle"
                           android:layout_height="wrap_content"
                           android:layout_width="fill_parent"
                           android:layout_weight="1"
@@ -53,6 +55,7 @@
                           android:onClick="onToggle"
                 />
             <ToggleButton android:id="@+id/btn_Date"
+                          android:background="@drawable/my_btn_toggle"
                           android:layout_height="wrap_content"
                           android:layout_width="fill_parent"
                           android:layout_weight="1"
