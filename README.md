@@ -10,8 +10,14 @@ The camera page uses an active preview from the back camera on the device and be
 
 Directory Overview
 ==================
-- Main Directory
-	- VehiCool source files (src)
+- Main Directory (CS121-License Plate)
+	- VehiCool source files 
+		- Test files
+		- Main source files
+			- Java files
+			- Resource files
+				- drawables bitmaps 
+				- layout files
 	- openCV library files 
 	- tesseract library files
 
