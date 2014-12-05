@@ -49,8 +49,14 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:contentDescription="@string/favorite"
+<<<<<<< HEAD
         android:layout_toLeftOf="@+id/btnDelete"
         android:paddingTop="10dp"
+=======
+        android:layout_toRightOf="@+id/title"
+        android:layout_above="@+id/desc"
+        android:paddingTop="40dp"
+>>>>>>> de3895255a6580a064c172a80a42552781bc1849
         android:paddingLeft="30dp"
         android:paddingRight="10dp" />
 
