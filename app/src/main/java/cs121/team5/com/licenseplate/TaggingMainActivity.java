@@ -146,7 +146,7 @@ public class TaggingMainActivity extends Activity {
                     try {
                         // Set Thumbnail image
                         options = new BitmapFactory.Options();
-                        options.inSampleSize = 1;  // Shrink the picture by a factor of 2
+                        options.inSampleSize = 2;  // Shrink the picture by a factor of 2
                         mBitmap = BitmapFactory.decodeFile(imagePath, options);
                         if (mBitmap != null) {
                             license.setImageBitmap(mBitmap);
